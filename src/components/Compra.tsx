@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { enlaceWhatsapp, sitio } from '@/config/sitio';
 import type { Curso, Moneda } from '@/content/tipos';
 import { formatearPrecio } from '@/lib/precios';
 import { DatosCliente, datosVacios, SelectorMoneda } from './DatosCliente';
@@ -14,16 +13,9 @@ export function Compra({ curso }: { curso: Curso }) {
   const [cargando, setCargando] = useState(false);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
 
-  // Sin pagos online o sin precio publicado → WhatsApp.
-  if (!pagosActivos || !Object.keys(curso.precios).length) {
-    return (
-      <div className="centro">
-        {curso.aviso && <p className="aviso">{curso.aviso}</p>}
-        <a className="boton" href={enlaceWhatsapp(`Hola ${sitio.autora}, quiero información de ${curso.titulo}`)} target="_blank" rel="noreferrer">
-          Escríbeme
-        </a>
-      </div>
-    );
+  // Sin precio publicado → solo el aviso (inscripciones cerradas, próxima edición…).
+  if (!Object.keys(curso.precios).length) {
+    return curso.aviso ? <p className="aviso centro">{curso.aviso}</p> : null;
   }
   if (clientSecret) return <PagoEmbebido clientSecret={clientSecret} />;
 
@@ -39,7 +31,7 @@ export function Compra({ curso }: { curso: Curso }) {
         <strong>{formatearPrecio(curso.precios[moneda]!, moneda)}</strong>
         <button
           className="boton"
-          disabled={!listo || cargando}
+          disabled={!listo || cargando || !pagosActivos}
           onClick={async () => {
             setError(''); setCargando(true);
             try { setClientSecret(await crearPago({ tipo: 'curso', slug: curso.slug, moneda, ...datos })); }
@@ -50,6 +42,7 @@ export function Compra({ curso }: { curso: Curso }) {
           {cargando ? 'Preparando…' : 'Ir al pago'}
         </button>
       </div>
+      {!pagosActivos && <p className="nota">El pago online se activará en unos días.</p>}
     </div>
   );
 }

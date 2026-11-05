@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { formatear } from '@/components/Texto';
-import { enlaceWhatsapp, sitio } from '@/config/sitio';
+import { sitio } from '@/config/sitio';
 
 // Todos los textos de esta página son palabras de Camila (README y oferta/ del repositorio "encartada").
 const oraculos = [
@@ -17,7 +17,7 @@ export default function Inicio() {
         <h1 className="gotica acento-rojo acento">{sitio.nombre}</h1>
         <p className="lema">{formatear(sitio.lema)}</p>
         <div style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap' }}>
-          <Link href="/oraculos" className="boton acento-rojo">ven al oráculo</Link>
+          <Link href="/reservar" className="boton acento-rojo">pide tu cita</Link>
           <Link href="/aprende" className="boton boton-borde acento-rojo">aprende conmigo</Link>
         </div>
         <div className="abanico" aria-hidden="true">
@@ -56,9 +56,7 @@ export default function Inicio() {
 
       <section className="seccion contenedor centro acento-verde">
         <p className="intro"><em>Ven, preguntémonos cómo.</em></p>
-        <a className="boton boton-borde" href={enlaceWhatsapp(`Hola ${sitio.autora}, tengo una pregunta`)} target="_blank" rel="noreferrer">
-          escríbeme por WhatsApp
-        </a>
+        <Link href="/reservar" className="boton">pide tu cita</Link>
       </section>
     </>
   );

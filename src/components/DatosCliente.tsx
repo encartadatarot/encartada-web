@@ -12,7 +12,7 @@ export function DatosCliente({ datos, onChange, conNotas = true }: { datos: Dato
     <div className="campos">
       <div className="campo"><label htmlFor="nombre">Nombre</label><input id="nombre" autoComplete="name" required value={datos.nombre} onChange={set('nombre')} /></div>
       <div className="campo"><label htmlFor="email">Email</label><input id="email" type="email" autoComplete="email" required value={datos.email} onChange={set('email')} /></div>
-      <div className="campo"><label htmlFor="telefono">WhatsApp (opcional)</label><input id="telefono" type="tel" autoComplete="tel" value={datos.telefono} onChange={set('telefono')} /></div>
+      <div className="campo"><label htmlFor="telefono">Teléfono (opcional)</label><input id="telefono" type="tel" autoComplete="tel" value={datos.telefono} onChange={set('telefono')} /></div>
       {conNotas && (
         <div className="campo"><label htmlFor="notas">¿Algo que quieras contarme antes? (opcional)</label><textarea id="notas" rows={3} maxLength={450} value={datos.notas} onChange={set('notas')} /></div>
       )}

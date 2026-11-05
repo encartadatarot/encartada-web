@@ -2,7 +2,7 @@ import type { Curso } from './tipos';
 
 /**
  * Cursos, clases y grabaciones (datos de oferta/formacion.md del repositorio "encartada").
- * Con precios → se paga online desde /cursos/<slug>. Sin precios → botón de WhatsApp.
+ * Con precios → se paga online desde /cursos/<slug>. Sin precios → solo se muestra el `aviso`.
  * Lo marcado [por confirmar] en el repositorio no se publica.
  */
 export const cursos: Curso[] = [
@@ -52,7 +52,7 @@ export const cursos: Curso[] = [
       { parte: 'Las bases filosóficas del tarot', sesiones: ['Reminiscencia', 'Lenguaje', 'Traducción', 'Correspondencias'] },
       { parte: 'El tarot como arte narrativo', sesiones: ['Fidere', 'Velle', 'Sciere', 'Tacere'] },
     ],
-    aviso: 'El ciclo II está en curso. Escríbeme para saber de la próxima edición.',
+    aviso: 'El ciclo II está en curso. Las inscripciones para la próxima edición se abrirán aquí.',
   },
 
   // ─── Pendientes de confirmar (no se publican) ────────────────────────

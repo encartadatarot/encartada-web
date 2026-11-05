@@ -24,7 +24,7 @@ export interface Servicio {
   personas?: string;
   /** Antelación mínima propia (si necesita preparación). Si no, se usa la de agenda.ts. */
   antelacionMinHoras?: number;
-  /** Si es false, el botón lleva a WhatsApp en lugar de al calendario. */
+  /** Si es false, la lectura se muestra pero no se puede reservar online. */
   reservaOnline?: boolean;
 }
 

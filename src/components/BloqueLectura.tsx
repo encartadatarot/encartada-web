@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { enlaceWhatsapp, sitio } from '@/config/sitio';
 import type { Servicio } from '@/content/tipos';
 import { lineaPrecios } from '@/lib/precios';
 import { Texto } from './Texto';
@@ -28,11 +27,7 @@ export function BloqueLectura({ servicio: s }: { servicio: Servicio }) {
           {lineaPrecios(s.precios)}
         </p>
         {s.preparacion && <p className="nota"><em>Preparación:</em> {s.preparacion}</p>}
-        {online ? (
-          <Link href={`/reservar/${s.slug}`} className="boton">Pide tu cita</Link>
-        ) : (
-          <a href={enlaceWhatsapp(`Hola ${sitio.autora}, quiero agendar ${s.nombre}`)} className="boton" target="_blank" rel="noreferrer">Pide tu cita</a>
-        )}
+        {online && <Link href={`/reservar/${s.slug}`} className="boton">Pide tu cita</Link>}
       </div>
       {s.imagen && (
         <div className="lectura-imagen">

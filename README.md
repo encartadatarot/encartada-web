@@ -5,7 +5,8 @@ Web de **en_cartada** (tarot, sueños y astrología), migrada desde Canva a **Ne
 - Mantiene tu estética: fondo negro, Cormorant Garamond + letra gótica, un color por lectura y tus collages de cartas.
 - **Reservas con pago dentro de la web**: la clienta elige modalidad, día y hora, y paga con Stripe sin salir de la página (tarjeta, Apple Pay, Google Pay). Monedas: EUR, USD y COP.
 - **Preparada para crecer**: cursos, grabaciones y recursos se añaden editando un archivo, sin tocar el diseño.
-- Si Stripe no está configurado, los botones llevan a WhatsApp, así que la web funciona desde el primer día.
+- Todo se resuelve en la web, sin WhatsApp: la clienta elige lectura, fecha y hora, y paga. Mientras Stripe no esté configurado, el calendario se ve pero el botón de pago queda desactivado.
+- La integración con WhatsApp queda para más adelante (el número sigue en `src/config/sitio.ts`).
 
 ## Dónde se edita cada cosa
 
@@ -43,7 +44,7 @@ Las URLs antiguas de Canva (`/orculos`, `/page-6`, …) redirigen a las nuevas (
 3. Las citas pagadas se guardan en los metadatos del pago en Stripe (fecha, hora, modalidad, datos de la clienta). Así no hace falta otra base de datos: todas tus reservas aparecen en el panel de Stripe.
 4. `/api/stripe/webhook` recibe la confirmación y, si configuras Resend, te envía un aviso a ti y la confirmación a la clienta.
 
-Las citas que cierres por WhatsApp se pueden bloquear en `agenda.ocupadoManual`.
+Las citas que no vengan de la web se pueden bloquear en `agenda.ocupadoManual`.
 
 ## Desarrollo local
 
@@ -77,7 +78,7 @@ Cuando cambie algo en `oferta/`, hay que llevarlo a `src/content/`.
 
 - [ ] **El tropo**: número de cartas (9 en la web, 8 en el PDF 2023). Ahora se muestra solo la duración.
 - [ ] **Astrología**: precios en COP (la web pone "400.00"). Ahora solo se muestran EUR y USD.
-- [ ] **Los puntos cardinales del tarot**: precio (1.800.000 COP en Canva frente a 300.000 COP en la web). Ahora el botón lleva a WhatsApp.
+- [ ] **Los puntos cardinales del tarot**: precio (1.800.000 COP en Canva frente a 300.000 COP en la web). Ahora se muestra sin precio ni botón de compra.
 - [ ] **El revés de Saturno**: fecha de la tercera sesión (17 o 24 de enero).
 - [ ] **¿De qué hablamos cuando hablamos de mística?**: si se vende la grabación.
 - [ ] Ciclo de iniciación, Hacia el otro lado, Tarot para tarotistas: faltan datos o están en curso.

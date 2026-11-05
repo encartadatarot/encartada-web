@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { agenda } from '@/config/agenda';
-import { enlaceWhatsapp, sitio } from '@/config/sitio';
 import type { Modalidad, Moneda, Servicio } from '@/content/tipos';
 import { formatearPrecio } from '@/lib/precios';
 import { diaSemana, fechaEnZona, formatearHora, sumarDias } from '@/lib/tiempo';
@@ -68,15 +67,6 @@ export function Reserva({ servicio }: { servicio: Servicio }) {
     } finally {
       setCargando(false);
     }
-  }
-
-  if (!pagosActivos) {
-    return (
-      <div className="paso">
-        <p>Las reservas online estarán disponibles muy pronto. Mientras tanto, escríbeme y buscamos un hueco:</p>
-        <a className="boton" href={enlaceWhatsapp(`Hola ${sitio.autora}, quiero agendar ${servicio.nombre}`)} target="_blank" rel="noreferrer">Reservar por WhatsApp</a>
-      </div>
-    );
   }
 
   if (clientSecret) {
@@ -155,9 +145,11 @@ export function Reserva({ servicio }: { servicio: Servicio }) {
           <SelectorMoneda precios={servicio.precios} moneda={moneda} onChange={setMoneda} />
           <div className="total">
             <strong>{formatearPrecio(servicio.precios[moneda]!, moneda)}</strong>
-            <button className="boton" disabled={!listo || cargando} onClick={pagar}>{cargando ? 'Preparando…' : 'Ir al pago'}</button>
+            <button className="boton" disabled={!listo || cargando || !pagosActivos} onClick={pagar}>{cargando ? 'Preparando…' : 'Ir al pago'}</button>
           </div>
-          <p className="nota">Pago seguro con Stripe. Recibirás la confirmación por email.</p>
+          <p className="nota">
+            {pagosActivos ? 'Pago seguro con Stripe. Recibirás la confirmación por email.' : 'El pago online se activará en unos días.'}
+          </p>
         </div>
       )}
     </div>
