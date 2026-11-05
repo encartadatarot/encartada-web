@@ -59,7 +59,7 @@ h1, h2, h3 { margin: 0 0 0.4em; line-height: 1.05; }
 .boton-chico { font-size: 1.15rem; padding: 10px 22px; }
 
 /* Cabecera */
-.cabecera { position: sticky; top: 0; z-index: 20; background: rgba(0,0,0,.88); backdrop-filter: blur(8px); border-bottom: 1px solid var(--linea); }
+.cabecera { position: sticky; top: 0; z-index: 20; background: #000; border-bottom: 1px solid var(--linea); }
 .cabecera .contenedor { display: flex; align-items: center; justify-content: space-between; height: 68px; }
 .logo { font-size: 2rem; text-decoration: none; color: var(--texto); }
 .nav { display: flex; gap: 28px; align-items: center; }
@@ -75,14 +75,17 @@ h1, h2, h3 { margin: 0 0 0.4em; line-height: 1.05; }
 .submenu a:hover { color: var(--dorado); }
 .submenu .sub a { padding-left: 34px; font-style: italic; color: var(--texto-suave); }
 .menu-movil { display: none; }
-.menu-movil summary { list-style: none; cursor: pointer; padding: 8px; }
-.menu-movil summary::-webkit-details-marker { display: none; }
-.menu-movil .panel { position: absolute; left: 0; right: 0; top: 68px; background: #000; border-bottom: 1px solid var(--linea);
-  padding: 12px 24px 24px; max-height: calc(100dvh - 68px); overflow: auto; }
+.menu-boton { background: none; border: 0; color: var(--texto); padding: 8px; margin-right: -8px; cursor: pointer; display: flex; }
+.menu-movil .panel { position: fixed; left: 0; right: 0; top: 68px; bottom: 0; background: #000; border-top: 1px solid var(--linea);
+  padding: 12px 24px 40px; overflow-y: auto; overscroll-behavior: contain; }
 .menu-movil ul { list-style: none; margin: 0; padding: 0; }
-.menu-movil a { display: block; padding: 10px 0; text-decoration: none; font-size: 1.3rem; }
+.menu-movil a { display: block; padding: 7px 0; text-decoration: none; font-size: 1.3rem; }
+.menu-movil .menu-cta { margin: 8px 0 14px; }
+.menu-movil a[aria-current='page'] { color: var(--rojo); }
 .menu-movil .hijos a { padding-left: 18px; font-size: 1.15rem; color: var(--texto-suave); }
 .menu-movil .hijos .sub a { padding-left: 36px; font-style: italic; }
+.menu-movil .hijos a[aria-current='page'] { color: var(--rojo); }
+.menu-movil .boton { display: inline-flex; padding: 14px 34px; font-size: 1.4rem; color: #000; }
 @media (max-width: 860px) { .nav { display: none; } .menu-movil { display: block; } }
 
 /* Pie */
