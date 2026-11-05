@@ -6,19 +6,19 @@ export const metadata = { title: 'Aprende conmigo' };
 
 export default function Aprende() {
   const secciones = [
-    { href: '/cursos', titulo: 'Cursos', acento: 'rojo', n: cursosPublicados.filter((c) => c.tipo !== 'grabacion').length, texto: 'Formaciones en directo con acompañamiento.' },
-    { href: '/grabaciones', titulo: 'Grabaciones', acento: 'morado', n: cursosPublicados.filter((c) => c.tipo === 'grabacion').length, texto: 'Clases grabadas para ver a tu ritmo.' },
-    { href: '/recursos', titulo: 'Recursos', acento: 'dorado', n: recursosPublicados.length, texto: 'Material gratuito: tiradas, guías y lecturas.' },
+    { href: '/cursos', titulo: 'cursos', acento: 'rojo', lista: cursosPublicados.filter((c) => c.tipo !== 'grabacion') },
+    { href: '/grabaciones', titulo: 'grabaciones', acento: 'morado', lista: cursosPublicados.filter((c) => c.tipo === 'grabacion') },
+    { href: '/recursos', titulo: 'recursos', acento: 'dorado', lista: recursosPublicados },
   ];
   return (
     <div className="contenedor">
-      <h1 className="titulo-pagina gotica acento-rojo">Aprende conmigo</h1>
+      <h1 className="titulo-pagina gotica acento-rojo">aprende conmigo</h1>
+      <p className="intro"><em>Soy encartada y juntas exploramos el ecosistema del tarot.</em></p>
       <div className="rejilla">
         {secciones.map((s) => (
           <Link key={s.href} href={s.href} className={`tarjeta acento-${s.acento}`}>
             <h3 className="gotica">{s.titulo}</h3>
-            <p>{s.texto}</p>
-            <span className="etiqueta">{s.n ? `${s.n} disponibles` : 'Muy pronto'}</span>
+            {s.lista.length ? s.lista.map((x) => <p key={x.slug}>{x.titulo}</p>) : <p>Muy pronto.</p>}
           </Link>
         ))}
       </div>

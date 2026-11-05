@@ -14,11 +14,15 @@ export function Compra({ curso }: { curso: Curso }) {
   const [cargando, setCargando] = useState(false);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
 
-  if (!pagosActivos) {
+  // Sin pagos online o sin precio publicado → WhatsApp.
+  if (!pagosActivos || !Object.keys(curso.precios).length) {
     return (
-      <a className="boton" href={enlaceWhatsapp(`Hola ${sitio.autora}, quiero información de ${curso.titulo}`)} target="_blank" rel="noreferrer">
-        Quiero apuntarme
-      </a>
+      <div className="centro">
+        {curso.aviso && <p className="aviso">{curso.aviso}</p>}
+        <a className="boton" href={enlaceWhatsapp(`Hola ${sitio.autora}, quiero información de ${curso.titulo}`)} target="_blank" rel="noreferrer">
+          Escríbeme
+        </a>
+      </div>
     );
   }
   if (clientSecret) return <PagoEmbebido clientSecret={clientSecret} />;

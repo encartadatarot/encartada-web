@@ -42,7 +42,7 @@ export async function huecosDisponibles(servicio: Servicio, fecha: string): Prom
 
   const duracion = servicio.duracionMin * 60000;
   const descanso = agenda.descansoMin * 60000;
-  const minimo = Date.now() + agenda.antelacionMinHoras * 3600000;
+  const minimo = Date.now() + (servicio.antelacionMinHoras ?? agenda.antelacionMinHoras) * 3600000;
   const ocupado = [...(await reservasPagadas(fecha)), ...ocupadoManual(fecha)];
 
   const huecos: Hueco[] = [];

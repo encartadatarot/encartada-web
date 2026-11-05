@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { modalidadTexto } from '@/components/BloqueLectura';
+import { detalleLectura, modalidadTexto } from '@/components/BloqueLectura';
 import { Reserva } from '@/components/Reserva';
 import { Texto } from '@/components/Texto';
 import { getServicio, serviciosPublicados } from '@/content/servicios';
@@ -27,9 +27,10 @@ export default async function ReservarServicio({ params }: Props) {
         <Texto parrafos={s.descripcion} className="lectura-desc" />
         <p className="lectura-meta">
           {modalidadTexto(s)}<br />
-          <b>{s.cartas ? `${s.cartas} cartas - ` : ''}{s.duracionMin} min</b><br />
+          <b>{detalleLectura(s)}</b><br />
           {lineaPrecios(s.precios)}
         </p>
+        {s.preparacion && <p className="aviso"><em>Preparación:</em> {s.preparacion}</p>}
       </aside>
       <Reserva servicio={s} />
     </div>

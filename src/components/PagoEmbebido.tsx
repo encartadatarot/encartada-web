@@ -4,7 +4,9 @@ import { EmbeddedCheckout, EmbeddedCheckoutProvider } from '@stripe/react-stripe
 import { loadStripe } from '@stripe/stripe-js';
 
 const clave = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
-const stripePromise = clave ? loadStripe(clave) : null;
+// Stripe.js se carga solo cuando hace falta pagar, no en cada página.
+let stripePromise: ReturnType<typeof loadStripe> | null = null;
+const getStripe = () => (clave ? (stripePromise ??= loadStripe(clave)) : null);
 
 export const pagosActivos = Boolean(clave);
 
@@ -12,7 +14,7 @@ export const pagosActivos = Boolean(clave);
 export function PagoEmbebido({ clientSecret }: { clientSecret: string }) {
   return (
     <div className="pago">
-      <EmbeddedCheckoutProvider stripe={stripePromise} options={{ clientSecret }}>
+      <EmbeddedCheckoutProvider stripe={getStripe()} options={{ clientSecret }}>
         <EmbeddedCheckout />
       </EmbeddedCheckoutProvider>
     </div>

@@ -60,7 +60,7 @@ export const servicios: Servicio[] = [
     publicado: true,
     acento: 'dorado',
     imagen: '/img/lecturas/el-tropo.webp',
-    cartas: 9,
+    // cartas: 9 en la web, 8 en el PDF 2023 → [por confirmar], no se publica hasta confirmarlo
     duracionMin: 105,
     modalidades: ['virtual', 'presencial'],
     precios: { eur: 80, usd: 90, cop: 250000 },
@@ -69,32 +69,145 @@ export const servicios: Servicio[] = [
     ],
   },
 
-  // ─── Pendientes de completar ─────────────────────────────────────────
-  // Estas lecturas existen en tu web de Canva pero aún falta copiar su texto,
-  // duración, precio e imagen (y confirmar la categoría). Pon `publicado: true` cuando estén.
-  ...(
-    [
-      ['interpretacion-de-suenos', 'Interpretación de sueños', 'suenos', 'plata'],
-      ['la-tertulia', 'La Tertulia', 'tarot-grupal', 'verde'],
-      ['la-brujula', 'La Brújula', 'tarot-de-temporada', 'dorado'],
-      ['cancion-natal', 'Canción Natal', 'astrologia', 'dorado'],
-      ['el-ritmo-de-las-luminarias', 'El Ritmo de las Luminarias', 'astrologia', 'dorado'],
-      ['la-consonancia', 'La Consonancia – Retorno Solar', 'astrologia', 'dorado'],
-      ['la-disonancia', 'La Disonancia – Retorno de Saturno', 'astrologia', 'morado'],
-    ] as const
-  ).map(
-    ([slug, nombre, categoria, acento]): Servicio => ({
-      slug,
-      nombre,
-      categoria,
-      acento,
-      publicado: false,
-      duracionMin: 60,
-      modalidades: ['virtual', 'presencial'],
-      precios: {},
-      descripcion: [],
-    }),
-  ),
+  // ─── Lunar: sueños ───────────────────────────────────────────────────
+  {
+    slug: 'la-hipnosis',
+    nombre: 'La hipnosis',
+    categoria: 'suenos',
+    publicado: true,
+    acento: 'plata',
+    duracionMin: 60,
+    modalidades: ['virtual', 'presencial'],
+    precios: { eur: 55, usd: 65, cop: 185000 },
+    descripcion: ['Cuando _escribes_ el sueño, buscando su medida en tus palabras, te enfrentas a los ==puntos ciegos== que no logras iluminar.'],
+    preparacion: 'Escribe el sueño y envíalo dos días antes. Registra los elementos que recuerdes: espacios, objetos, personajes, situaciones y emociones.',
+    antelacionMinHoras: 72,
+  },
+  {
+    slug: 'el-despertar',
+    nombre: 'El despertar',
+    categoria: 'suenos',
+    publicado: true,
+    acento: 'plata',
+    duracionMin: 90,
+    modalidades: ['virtual', 'presencial'],
+    precios: { eur: 65, usd: 75, cop: 200000 },
+    descripcion: ['Además de interpretar tu sueño escrito, revisamos los ==tránsitos astrológicos== para encontrar relación con este momento preciso de tu vida. Concluimos la sesión con un _mensaje del tarot_.'],
+  },
+
+  // ─── Tarot grupal ────────────────────────────────────────────────────
+  {
+    slug: 'la-mariposa',
+    nombre: 'La mariposa',
+    categoria: 'tarot-grupal',
+    publicado: true,
+    acento: 'rojo',
+    cartas: 10,
+    duracionMin: 120,
+    modalidades: ['virtual', 'presencial'],
+    precios: { eur: 120, usd: 130, cop: 350000 },
+    descripcion: ['_Para dos: amantes, amigas, hermanas, madre o padre e hijo._ Te revela los ==vicios== y las ==virtudes== de la relación para que los equilibren y puedan amarse libre y placenteramente.'],
+  },
+  {
+    slug: 'la-tertulia',
+    nombre: 'La tertulia',
+    categoria: 'tarot-grupal',
+    publicado: true,
+    acento: 'verde',
+    personas: '3 a 4 personas',
+    duracionMin: 150,
+    modalidades: ['virtual', 'presencial'],
+    precios: { eur: 150, usd: 165, cop: 450000 },
+    descripcion: [
+      'Un _juego grupal_ para amigas o familiares que quieran reunirse a verse y escucharse ==bajo otra luz==.',
+      'Recomendada para amigos y familia que se extrañan y viven en diferentes partes del mundo.',
+    ],
+  },
+
+  // ─── Tarot de temporada ──────────────────────────────────────────────
+  {
+    slug: 'la-brujula',
+    nombre: 'La brújula',
+    categoria: 'tarot-de-temporada',
+    publicado: true,
+    acento: 'dorado',
+    cartas: 16,
+    duracionMin: 105,
+    modalidades: ['virtual', 'presencial'],
+    precios: { eur: 80, usd: 90, cop: 250000 },
+    descripcion: [
+      'Para _cerrar_ y _prever_, temporada a temporada, mes a mes, lo que te depara ==el año que empieza==.',
+      'Recomendada para que ordenes tu calendario anual acorde al ritmo de los astros.',
+    ],
+  },
+
+  // ─── Solar: astrología ───────────────────────────────────────────────
+  // Los precios en COP de la web están escritos como "400.00"; están [por confirmar]
+  // en oferta/oraculos.md, así que por ahora solo se publican EUR y USD.
+  {
+    slug: 'tu-cancion-natal',
+    nombre: 'Tu canción natal',
+    categoria: 'astrologia',
+    publicado: true,
+    acento: 'dorado',
+    duracionMin: 120,
+    modalidades: ['virtual', 'presencial'],
+    precios: { eur: 130, usd: 150 },
+    descripcion: [
+      'Escuchamos la canción que compusieron los dioses para tu nacimiento, a partir de la técnica tradicional helenística: ==Ritmo== (signos y casas), ==Melodía== (planetas tradicionales) e ==Historia== (dignidades y aspectos).',
+      '_Incluye el PDF de la sesión._',
+    ],
+  },
+  {
+    slug: 'sesion-de-improvisacion',
+    nombre: 'Sesión de improvisación',
+    categoria: 'astrologia',
+    publicado: true,
+    acento: 'dorado',
+    duracionMin: 60,
+    modalidades: ['virtual', 'presencial'],
+    precios: { eur: 65, usd: 75 },
+    descripcion: [
+      'Al compás de tu canción natal, nos dejamos llevar por las ==melodías del momento== para que ensayes tu técnica de _improvisación_ cuando cambie la melodía.',
+      '_Incluye una pregunta para el tarot._',
+    ],
+  },
+  {
+    slug: 'la-danza-de-las-luminarias',
+    nombre: 'La danza de las luminarias',
+    categoria: 'astrologia',
+    publicado: true,
+    acento: 'dorado',
+    duracionMin: 75,
+    modalidades: ['virtual', 'presencial'],
+    precios: { eur: 80, usd: 90 },
+    descripcion: ['Al compás de tu canción natal, interpretamos la danza de tu ==Sol== y tu ==Luna==, para que recuperes tu _sabiduría musical_ y puedas improvisar libremente dentro de la melodía que te proponen.'],
+  },
+  {
+    slug: 'la-consonancia',
+    nombre: 'La consonancia: retorno solar',
+    categoria: 'astrologia',
+    publicado: true,
+    acento: 'dorado',
+    duracionMin: 90,
+    modalidades: ['virtual', 'presencial'],
+    precios: { eur: 90, usd: 100 },
+    descripcion: ['En el contexto de tu canción natal, nos centramos en el compás que empieza ==el día de tu cumpleaños==, para que _ensayes tu danza_ antes de salir al escenario.'],
+  },
+  {
+    slug: 'la-disonancia',
+    nombre: 'La disonancia: retorno de Saturno',
+    categoria: 'astrologia',
+    publicado: true,
+    acento: 'dorado',
+    duracionMin: 75,
+    modalidades: ['virtual', 'presencial'],
+    precios: { eur: 80, usd: 85 },
+    descripcion: [
+      'Al compás de tu canción natal, nos centramos en la ==disonancia== que aparece en los momentos de frustración en el paso de la niñez a la adultez para que _ensayes tu danza_ antes de salir al escenario.',
+      'Recomendada para personas que quieran mejorar su relación con la frustración y encontrar sentido en las situaciones difíciles. Para quienes están cerca de o atravesando su retorno de Saturno (28-30, 57-60, 85-90 años), o para quienes quieran anticiparse o interpretarlo en retrospectiva.',
+    ],
+  },
 ];
 
 export const serviciosPublicados = servicios.filter((s) => s.publicado);

@@ -12,3 +12,7 @@ export async function enviarEmail(para: string, asunto: string, html: string) {
   });
   if (!r.ok) console.error('Error enviando email', r.status, await r.text());
 }
+
+/** Escapa texto escrito por la clienta antes de meterlo en un email HTML. */
+export const esc = (s: string | undefined) =>
+  (s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);

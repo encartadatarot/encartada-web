@@ -1,7 +1,9 @@
 import { NextResponse } from 'next/server';
 import { agenda } from '@/config/agenda';
 import { sitio } from '@/config/sitio';
-import { enviarEmail } from '@/lib/email';
+import { getCurso } from '@/content/cursos';
+import { getServicio } from '@/content/servicios';
+import { enviarEmail, esc } from '@/lib/email';
 import { stripe } from '@/lib/stripe';
 import { formatearFechaLarga } from '@/lib/tiempo';
 
@@ -21,28 +23,30 @@ export async function POST(req: Request) {
 
   if (evento.type === 'checkout.session.completed') {
     const s = evento.data.object;
-    const m = s.metadata ?? {};
-    const cuando = m.inicio ? `${formatearFechaLarga(m.inicio, agenda.zonaHoraria)} (hora de Madrid)` : '';
+    const raw = s.metadata ?? {};
+    const m = Object.fromEntries(Object.entries(raw).map(([k, v]) => [k, esc(v)])) as Record<string, string>;
+    const titulo = m.tipo === 'servicio' ? getServicio(raw.slug)?.nombre : getCurso(raw.slug)?.titulo;
+    const cuando = raw.inicio ? `${formatearFechaLarga(raw.inicio, agenda.zonaHoraria)} (hora de Madrid)` : '';
     const detalle =
       m.tipo === 'servicio'
-        ? `<p><b>${m.slug}</b> · ${m.modalidad}<br>${cuando}</p>`
-        : `<p><b>${m.slug}</b></p>`;
+        ? `<p><b>${titulo ?? m.slug}</b> · ${m.modalidad}<br>${cuando}</p>`
+        : `<p><b>${titulo ?? m.slug}</b></p>`;
 
     // Aviso para ti
     await enviarEmail(
       process.env.EMAIL_AVISOS ?? sitio.email,
-      m.tipo === 'servicio' ? `Nueva reserva: ${m.nombre}` : `Nueva compra: ${m.nombre}`,
+      m.tipo === 'servicio' ? `Nueva reserva: ${raw.nombre}` : `Nueva compra: ${raw.nombre}`,
       `${detalle}<p>${m.nombre} · ${m.email} · ${m.telefono || 'sin teléfono'}</p><p>${m.notas ?? ''}</p>`,
     );
-    // Confirmación para la clienta
+    // Confirmación para la clienta (formato de correo de identidad/voz-y-estilo.md)
+    const siguiente =
+      m.tipo !== 'servicio' ? 'Te escribiré con el acceso muy pronto.'
+        : m.modalidad === 'virtual' ? 'Te enviaré el enlace de la videollamada antes de la sesión.'
+        : 'Te escribiré con la dirección en Madrid.';
     await enviarEmail(
-      m.email,
-      m.tipo === 'servicio' ? 'Tu cita con en_cartada está confirmada' : 'Gracias por tu compra en en_cartada',
-      `<p>Hola ${m.nombre},</p>${detalle}<p>${
-        m.tipo !== 'servicio' ? 'Te escribiré con el acceso muy pronto.'
-          : m.modalidad === 'virtual' ? 'Te enviaré el enlace de la videollamada antes de la sesión.'
-          : 'Te escribiré con la dirección en Madrid.'
-      }</p><p>Con cariño,<br>${sitio.autora}</p>`,
+      raw.email,
+      m.tipo === 'servicio' ? 'Tu cita con en_cartada está confirmada' : 'Tu inscripción en en_cartada',
+      `<p>Hola, ${m.nombre}!</p>${detalle}<p>${siguiente}</p><p>Te agradezco tu confianza; la corresponderé con todo mi cariño.</p><p>Un abrazo!<br>Camila CC<br>@en_cartada</p>`,
     );
   }
   return NextResponse.json({ recibido: true });

@@ -63,10 +63,25 @@ npm run dev                  # http://localhost:3000
 
 Prueba primero con las claves *test* de Stripe (tarjeta `4242 4242 4242 4242`).
 
-## Pendiente
+## Contenido
 
-- [ ] Copiar desde Canva el texto, precio e imagen de: Interpretación de sueños, La Tertulia, La Brújula, Canción Natal, El Ritmo de las Luminarias, La Consonancia, La Disonancia (están en `servicios.ts` con `publicado: false`; confirmar su categoría).
-- [ ] Completar los cursos y grabaciones en `cursos.ts`.
-- [ ] Revisar el horario real en `agenda.ts`.
-- [ ] Revisar los textos de la página de inicio.
-- [ ] Más adelante: sincronizar con Google Calendar, área privada con acceso a los cursos.
+Los textos, precios y nombres salen del repositorio de la práctica, [`encartadatarot/encartada`](https://github.com/encartadatarot/encartada) (`oferta/`, `identidad/`). Sus reglas aplican aquí:
+
+- Las palabras de Camila se copian tal cual, sin las erratas de la web de Canva.
+- No se inventan textos, precios ni fechas.
+- Lo marcado **[por confirmar]** en ese repositorio no se publica (queda comentado en el código).
+
+Cuando cambie algo en `oferta/`, hay que llevarlo a `src/content/`.
+
+## Pendiente (no publicado hasta confirmarlo)
+
+- [ ] **El tropo**: número de cartas (9 en la web, 8 en el PDF 2023). Ahora se muestra solo la duración.
+- [ ] **Astrología**: precios en COP (la web pone "400.00"). Ahora solo se muestran EUR y USD.
+- [ ] **Los puntos cardinales del tarot**: precio (1.800.000 COP en Canva frente a 300.000 COP en la web). Ahora el botón lleva a WhatsApp.
+- [ ] **El revés de Saturno**: fecha de la tercera sesión (17 o 24 de enero).
+- [ ] **¿De qué hablamos cuando hablamos de mística?**: si se vende la grabación.
+- [ ] Ciclo de iniciación, Hacia el otro lado, Tarot para tarotistas: faltan datos o están en curso.
+- [ ] Grafía de la marca (en_cartada / en cartada) y logo original.
+- [ ] Horario real en `src/config/agenda.ts`.
+- [ ] Imágenes para las lecturas que aún no tienen collage (sueños, grupales, temporada, astrología).
+- [ ] Más adelante: sincronizar con Google Calendar, área privada con acceso a los cursos y grabaciones.

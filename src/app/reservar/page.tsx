@@ -1,27 +1,33 @@
-import Image from 'next/image';
 import Link from 'next/link';
-import { getCategoria } from '@/content/categorias';
-import { serviciosPublicados } from '@/content/servicios';
+import { detalleLectura } from '@/components/BloqueLectura';
+import { categorias } from '@/content/categorias';
+import { serviciosDe } from '@/content/servicios';
 import { lineaPrecios } from '@/lib/precios';
 
-export const metadata = { title: 'Reservar' };
+export const metadata = { title: 'Pide tu cita' };
 
 export default function Reservar() {
   return (
     <div className="contenedor">
-      <h1 className="titulo-pagina gotica acento-dorado">Pide tu cita</h1>
-      <p className="intro"><em>Elige la lectura que te llama.</em></p>
-      <div className="rejilla">
-        {serviciosPublicados.filter((s) => s.reservaOnline !== false).map((s) => (
-          <Link key={s.slug} href={`/reservar/${s.slug}`} className={`tarjeta acento-${s.acento}`}>
-            {s.imagen && <Image src={s.imagen} alt="" width={840} height={1400} style={{ maxWidth: 140, margin: '0 auto 8px' }} />}
-            <span className="etiqueta">{getCategoria(s.categoria)?.titulo}</span>
-            <h3 className="gotica">{s.nombre}</h3>
-            <p>{s.cartas ? `${s.cartas} cartas · ` : ''}{s.duracionMin} min</p>
-            <p>{lineaPrecios(s.precios)}</p>
-          </Link>
-        ))}
-      </div>
+      <h1 className="titulo-pagina gotica acento-rojo">Pide tu cita</h1>
+      {categorias.map((c) => {
+        const lista = serviciosDe(c.slug).filter((s) => s.reservaOnline !== false);
+        if (!lista.length) return null;
+        return (
+          <section key={c.slug} className="seccion">
+            <h2 className="gotica centro" style={{ fontSize: '2.2rem' }}>{c.titulo}</h2>
+            <div className="rejilla">
+              {lista.map((s) => (
+                <Link key={s.slug} href={`/reservar/${s.slug}`} className={`tarjeta acento-${s.acento}`}>
+                  <h3 className="gotica">{s.nombre}</h3>
+                  <p>{detalleLectura(s)}</p>
+                  <p className="acento">{lineaPrecios(s.precios)}</p>
+                </Link>
+              ))}
+            </div>
+          </section>
+        );
+      })}
     </div>
   );
 }

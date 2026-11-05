@@ -11,18 +11,23 @@ export function modalidadTexto(s: Servicio) {
   return v && p ? 'Virtual y presencial (Madrid)' : v ? 'Virtual' : 'Presencial (Madrid)';
 }
 
+export function detalleLectura(s: Servicio) {
+  return [s.cartas && `${s.cartas} cartas`, s.personas, `${s.duracionMin} min`].filter(Boolean).join(' - ');
+}
+
 export function BloqueLectura({ servicio: s }: { servicio: Servicio }) {
   const online = s.reservaOnline !== false;
   return (
-    <section className={`lectura acento-${s.acento}`} id={s.slug}>
+    <section className={`lectura acento-${s.acento}${s.imagen ? '' : ' sin-imagen'}`} id={s.slug}>
       <div className="lectura-texto">
         <h2 className="gotica">{s.nombre}</h2>
         <Texto parrafos={s.descripcion} className="lectura-desc" />
         <p className="lectura-meta">
           {modalidadTexto(s)}<br />
-          <b>{s.cartas ? `${s.cartas} cartas - ` : ''}{s.duracionMin} min</b><br />
+          <b>{detalleLectura(s)}</b><br />
           {lineaPrecios(s.precios)}
         </p>
+        {s.preparacion && <p className="nota"><em>Preparación:</em> {s.preparacion}</p>}
         {online ? (
           <Link href={`/reservar/${s.slug}`} className="boton">Pide tu cita</Link>
         ) : (

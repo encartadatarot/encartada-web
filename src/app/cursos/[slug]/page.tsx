@@ -21,6 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function PaginaCurso({ params }: Props) {
   const c = getCurso((await params).slug);
   if (!c) notFound();
+  const conFicha = c.fechas || c.formato || c.requisitos || c.temario;
   return (
     <div className={`contenedor acento-${c.acento}`}>
       <h1 className="titulo-pagina gotica">{c.titulo}</h1>
@@ -28,12 +29,20 @@ export default async function PaginaCurso({ params }: Props) {
       <div className="prosa">
         <p className="centro"><em>{c.resumen}</em></p>
         <Texto parrafos={c.descripcion} />
-        {c.modulos && (
-          <ul className="lista-modulos">
-            {c.modulos.map((m) => <li key={m.titulo}><strong className="acento">{m.titulo}</strong>{m.descripcion && <> — {m.descripcion}</>}</li>)}
-          </ul>
+        {conFicha && (
+          <dl className="ficha">
+            {c.fechas && <><dt>Fechas</dt><dd>{c.fechas}</dd></>}
+            {c.formato && <><dt>Formato</dt><dd>{c.formato}</dd></>}
+            {c.requisitos && <><dt>Requisitos</dt><dd><ul>{c.requisitos.map((r) => <li key={r}>{r}</li>)}</ul></dd></>}
+            {c.temario?.map((t, i) => (
+              <div key={i}>
+                <dt>{t.parte ?? 'Sesiones'}</dt>
+                <dd><ol start={c.temario!.slice(0, i).reduce((n, x) => n + x.sesiones.length, 1)}>{t.sesiones.map((x) => <li key={x}>{x}</li>)}</ol></dd>
+              </div>
+            ))}
+          </dl>
         )}
-        <p className="lectura-meta centro">{lineaPrecios(c.precios)}</p>
+        {Object.keys(c.precios).length > 0 && <p className="lectura-meta centro">{lineaPrecios(c.precios)}</p>}
         <Compra curso={c} />
       </div>
     </div>

@@ -26,7 +26,7 @@ export default async function PaginaCategoria({ params }: Props) {
   return (
     <div className="contenedor">
       <h1 className={`titulo-pagina gotica acento-${acentoOraculo[categoria.oraculo]}`}>{categoria.titulo}</h1>
-      {categoria.intro && <Texto parrafos={categoria.intro} className="intro" />}
+      {categoria.intro && <Texto parrafos={categoria.intro} className={categoria.intro.length > 2 ? 'cita' : 'intro'} />}
       {lista.map((s) => <BloqueLectura key={s.slug} servicio={s} />)}
       {lista.length === 0 && (
         <div className="intro">

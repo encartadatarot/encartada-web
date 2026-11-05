@@ -1,7 +1,9 @@
 export const sitio = {
   nombre: 'en_cartada',
   autora: 'Camila',
-  descripcion: 'Tarot, sueños y astrología. Lecturas virtuales y presenciales en Madrid.',
+  // Lema y presentación: palabras de Camila (README del repositorio encartada).
+  lema: '_Pensemos_ la imagen, hagámosla _cuerpo_.',
+  descripcion: 'Mi oficio es enseñarte cómo leerte simbólicamente, para que veas y nombres con hondura tu vida y, así, puedas crearla con más lucidez.',
   whatsapp: '34667772711',
   instagram: 'https://www.instagram.com/en_cartada/',
   email: 'encartada.tarot@gmail.com',
@@ -16,7 +18,7 @@ export function enlaceWhatsapp(mensaje: string) {
 export const menu: { titulo: string; href: string; hijos?: { titulo: string; href: string; sub?: boolean }[] }[] = [
   { titulo: 'Inicio', href: '/' },
   {
-    titulo: 'Oráculos',
+    titulo: 'oráculos',
     href: '/oraculos',
     hijos: [
       { titulo: 'Lunar: sueños', href: '/suenos' },

@@ -8,7 +8,7 @@
   --verde: #528c55;
   --morado: #8a2fb5;
   --dorado: #bb9740;
-  --plata: #b9b4c7;
+  --plata: #9db4b5;
   --azul: #5a7fb8;
   --acento: var(--dorado);
   --radio: 999px;
@@ -105,6 +105,10 @@ h1, h2, h3 { margin: 0 0 0.4em; line-height: 1.05; }
 .lectura-meta { color: var(--acento); font-size: 1.5rem; line-height: 1.15; margin: 24px 0 28px; }
 .lectura-meta b { font-weight: 700; }
 .lectura-imagen { justify-self: center; max-width: 420px; width: 100%; }
+.lectura.sin-imagen { grid-template-columns: 1fr; padding: 40px 0; border-top: 1px solid var(--linea); }
+.lectura.sin-imagen:first-of-type { border-top: 0; }
+.lectura.sin-imagen .lectura-texto { max-width: 560px; }
+.lectura .nota { max-width: 380px; margin: -8px auto 24px; }
 @media (max-width: 760px) {
   .lectura { grid-template-columns: 1fr; gap: 28px; padding: 40px 0; }
   .lectura-imagen { order: -1; max-width: 300px; }
@@ -172,3 +176,11 @@ a.tarjeta:hover { border-color: var(--acento); transform: translateY(-2px); }
 .prosa p { margin: 0 0 .8em; }
 .lista-modulos { list-style: none; padding: 0; margin: 24px 0; }
 .lista-modulos li { border-bottom: 1px solid var(--linea); padding: 12px 0; }
+.ficha { border: 1px solid var(--linea); border-radius: 18px; padding: 20px 24px; margin: 24px 0; font-size: 1.2rem; }
+.ficha dt { color: var(--acento); font-weight: 600; margin-top: 10px; }
+.ficha dt:first-child { margin-top: 0; }
+.ficha dd { margin: 2px 0 0; }
+.ficha ul { margin: 4px 0 0; padding-left: 20px; }
+.lema { font-size: clamp(1.6rem, 3.4vw, 2.2rem); }
+.cita { max-width: 640px; margin: 0 auto; font-size: 1.45rem; text-align: center; }
+.cita p { margin: 0 0 .6em; }
