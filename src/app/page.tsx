@@ -22,7 +22,7 @@ export default function Inicio() {
       <p className="contenedor lema-portada">{formatear(sitio.lema)}</p>
 
       <section className="portada-canva acento-lema">
-        <h2 className="gotica acento pc pc-quien">¿quién soy?</h2>
+        <h2 className="gotica acento pc pc-quien acento-rojo">¿quién soy?</h2>
         <p className="pc pc-bio">
           {L(
             <><strong><em>Artista</em></strong> visual y escénica;</>,
