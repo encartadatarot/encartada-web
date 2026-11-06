@@ -1,7 +1,7 @@
 /**
  * Collages de la web original de Canva, separados en sus tiras (capas transparentes).
  * Posiciones en % del collage. Cada tira flota a su propio ritmo, como en Canva pero más sutil:
- * giro de ~1-2°, desplazamiento de ~0,5-1 % y ciclos de 4-6 s.
+ * en la web se aplican ×1,5 de giro y ciclos un 25 % más rápidos (ver .collage-capa en globals.css).
  * Generado a partir de encartada.my.canva.site.
  */
 export type Capa = { src: string; x: number; y: number; w: number; h: number; giro: number; contragiro: number; dx: number; dy: number; duracion: number; retraso: number };

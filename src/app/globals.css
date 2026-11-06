@@ -270,7 +270,8 @@ fieldset.campo legend { font-size: 1rem; color: var(--texto-suave); margin-botto
 .collage-capa {
   position: absolute;
   will-change: transform;
-  animation: balanceo var(--duracion) ease-in-out var(--retraso) infinite;
+  --k: 1.5; /* intensidad del flotar continuo */
+  animation: balanceo calc(var(--duracion) * 0.75) ease-in-out var(--retraso) infinite;
   animation-play-state: paused;
 }
 .collage.en-vista .collage-capa { animation-play-state: running; }
