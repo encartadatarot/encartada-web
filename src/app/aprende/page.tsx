@@ -14,7 +14,7 @@ export default function Aprende() {
   return (
     <div className="contenedor">
       <h1 className="titulo-pagina gotica acento-rojo">aprende conmigo</h1>
-      <p className="intro"><em>Soy encartada y juntas exploramos el ecosistema del tarot.</em></p>
+      <p className="intro"><em>Soy encartada y juntas exploramos el ecosistema de tu vida a través del lenguaje oracular.</em></p>
       <div className="rejilla">
         {secciones.map((s) => (
           <Link key={s.href} href={s.href} className={`tarjeta acento-${s.acento}`}>

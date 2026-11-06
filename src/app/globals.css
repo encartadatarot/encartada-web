@@ -348,3 +348,32 @@ a:focus-visible .collage.al-pasar .collage-capa { animation-play-state: running;
 .js .mosaico-capas.encendido .mosaico-capa { animation: encender 0.4s ease-out var(--r) both; }
 @keyframes encender { from { opacity: 0; } to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .js .mosaico-capa { opacity: 1; animation: none !important; } }
+
+/* ─── Portada con la distribución de Canva ───
+   Medidas en px de la página de Canva de 1366 px, convertidas con --u (1/1366 del ancho).
+   Origen vertical: el final del mosaico (y = 823 en Canva). */
+.portada-canva { --u: calc(100vw / 1366); position: relative; height: calc(1560 * var(--u)); margin-top: calc(-20 * var(--u)); }
+.portada-canva .pc { position: absolute; margin: 0; }
+.portada-canva .linea { display: block; white-space: nowrap; }
+.pc-quien { left: calc(282 * var(--u)); top: calc(51 * var(--u)); font-size: calc(86.86 * var(--u)); line-height: calc(77 * var(--u)); }
+.pc-bio { left: calc(292 * var(--u)); top: calc(156 * var(--u)); width: calc(456 * var(--u)); font-size: calc(46.67 * var(--u)); line-height: calc(46 * var(--u)); }
+.pc-oficio { left: calc(704 * var(--u)); top: calc(94 * var(--u)); width: calc(586 * var(--u)); text-align: right; font-size: calc(80 * var(--u)); line-height: calc(66 * var(--u)); }
+.pc-oraculo-t { left: calc(126 * var(--u)); top: calc(804 * var(--u)); width: calc(266 * var(--u)); text-align: center; font-size: calc(81.43 * var(--u)); line-height: calc(72 * var(--u)); }
+.pc-oraculo-i { left: calc(164.5 * var(--u)); top: calc(953 * var(--u)); width: calc(189.5 * var(--u)); }
+.pc-aprende-i { left: calc(424.5 * var(--u)); top: calc(769 * var(--u)); width: calc(194.5 * var(--u)); }
+.pc-aprende-t { left: calc(388 * var(--u)); top: calc(1388 * var(--u)); width: calc(268 * var(--u)); text-align: center; font-size: calc(81.43 * var(--u)); line-height: calc(72 * var(--u)); }
+.pc-final { left: calc(812.5 * var(--u)); top: calc(768.5 * var(--u)); width: calc(417.5 * var(--u)); }
+.portada-canva .pc img { width: 100%; height: auto; display: block; }
+.pc-enlace { color: inherit; text-decoration: none; }
+@media (max-width: 760px) {
+  .portada-canva { height: auto; margin: 32px auto 0; width: min(100% - 32px, 560px); display: grid; grid-template-columns: 1fr 1fr; gap: 28px 18px; text-align: center; }
+  .portada-canva .pc { position: static; width: auto !important; font-size: inherit; line-height: inherit; }
+  .portada-canva .linea { display: inline; white-space: normal; }
+  .portada-canva .linea::after { content: ' '; }
+  .pc-quien { grid-column: 1 / -1; font-size: 2.6rem !important; line-height: 1.1 !important; }
+  .pc-bio { grid-column: 1 / -1; font-size: 1.3rem !important; line-height: 1.35 !important; }
+  .pc-oficio { grid-column: 1 / -1; text-align: center !important; font-size: 1.9rem !important; line-height: 1.15 !important; }
+  .pc-enlace { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .pc-enlace h2 { font-size: 2.2rem !important; line-height: 1 !important; }
+  .pc-final { grid-column: 1 / -1; max-width: 340px; margin: 0 auto; }
+}
