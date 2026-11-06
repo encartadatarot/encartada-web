@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { MosaicoAnimado } from '@/components/MosaicoAnimado';
 import { formatear } from '@/components/Texto';
 import { sitio } from '@/config/sitio';
 import { imagen } from '@/content/imagenes';
@@ -9,7 +10,7 @@ export default function Inicio() {
   return (
     <>
       <section className="mosaico flota">
-        <Image {...imagen('/img/inicio/mosaico.webp')} alt={`${sitio.nombre}: emblema del corazón con espadas y llama entre cartas de tarot`} priority sizes="100vw" />
+        <MosaicoAnimado alt={`${sitio.nombre}: emblema del corazón con espadas y llama entre cartas de tarot`} />
       </section>
 
       <p className="contenedor lema-portada">{formatear(sitio.lema)}</p>

@@ -318,13 +318,15 @@ a:focus-visible .collage.al-pasar .collage-capa { animation-play-state: running;
   65% { transform: translate(-1%, 1.3%) rotate(-1.6deg); }
 }
 .mosaico { overflow: hidden; }
-.mosaico.flota img { animation-name: flotar-mosaico; animation-duration: 4.5s; }
+.mosaico.flota img { animation: none; }
+.mosaico.flota .mosaico-capas { animation: flotar-mosaico 4.5s ease-in-out infinite; animation-play-state: paused; }
+.mosaico.flota:hover .mosaico-capas, .mosaico.flota.tocado .mosaico-capas { animation-play-state: running; }
 @keyframes flotar-mosaico {
   0%, 100% { transform: scale(1.0); }
   35% { transform: scale(1.04) translate(0.6%, -0.4%) rotate(0.45deg); }
   70% { transform: scale(1.035) translate(-0.6%, 0.4%) rotate(-0.4deg); }
 }
-@media (prefers-reduced-motion: reduce) { .flota img, .mosaico.flota img, .collage.al-pasar .collage-capa { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .flota img, .mosaico.flota .mosaico-capas, .collage.al-pasar .collage-capa { animation: none; } }
 .carta-collage { width: 100%; max-width: 260px; }
 .portada-columnas .carta-enlace .carta-collage { max-width: 200px; }
 .quien-soy-imagen { display: block; }
@@ -334,4 +336,13 @@ a:focus-visible .collage.al-pasar .collage-capa { animation-play-state: running;
 .reserva-resumen .flota img { max-width: 220px; margin: 0 auto 16px; }
 
 /* Lema bajo el mosaico de la portada */
-.lema-portada { text-align: center; font-size: clamp(2rem, 4.6vw, 3.2rem); line-height: 1.15; margin-top: 36px; margin-bottom: 0; }
+.lema-portada { color: #eb4b2c; text-align: center; font-size: clamp(2rem, 4.6vw, 3.2rem); line-height: 1.15; margin-top: 36px; margin-bottom: 0; }
+
+/* Mosaico de la portada: las piezas se encienden una a una (como en Canva) */
+.mosaico-capas { position: relative; width: 100%; }
+.mosaico-capa { position: absolute; }
+.js main .mosaico-capa img { opacity: 1; transition: none; }
+.js .mosaico-capa { opacity: 0; }
+.js .mosaico-capas.encendido .mosaico-capa { animation: encender 0.4s ease-out var(--r) both; }
+@keyframes encender { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .js .mosaico-capa { opacity: 1; animation: none !important; } }
