@@ -15,7 +15,6 @@ export default function Inicio() {
 
       <div className="contenedor centro" style={{ marginTop: 28 }}>
         <p className="lema">{formatear(sitio.lema)}</p>
-        <Link href="/reservar" className="boton acento-rojo">pide tu cita</Link>
       </div>
 
       <section className="contenedor quien-soy acento-rojo">
