@@ -39,7 +39,7 @@ Las URLs antiguas de Canva (`/orculos`, `/page-6`, …) redirigen a las nuevas (
 
 ## Cómo funcionan las reservas
 
-1. `/api/disponibilidad` calcula los huecos libres a partir de `src/config/agenda.ts`, quitando las citas ya pagadas.
+1. `/api/disponibilidad` calcula los huecos libres a partir de `src/config/agenda.ts`, quitando las citas ya pagadas. Hay dos agendas: **Europa** (9:00-19:00, hora de Madrid) y **Colombia** (8:00-12:00, hora de Colombia). El calendario muestra la de la zona horaria de quien reserva (América → Colombia) y se puede cambiar con un selector. Una cita en una agenda bloquea ese momento en la otra.
 2. `/api/checkout` vuelve a comprobar que el hueco sigue libre y crea un pago de Stripe embebido (el hueco queda guardado 30 min).
 3. Las citas pagadas se guardan en los metadatos del pago en Stripe (fecha, hora, modalidad, datos de la clienta). Así no hace falta otra base de datos: todas tus reservas aparecen en el panel de Stripe.
 4. `/api/stripe/webhook` recibe la confirmación y, si configuras Resend, te envía un aviso a ti y la confirmación a la clienta.
@@ -82,6 +82,6 @@ Cuando cambie algo en `oferta/`, hay que llevarlo a `src/content/`.
 - [ ] **El revés de Saturno**: el flyer escribe «17 de enero, 2026»; corregir el año en Canva y volver a subir la imagen.
 - [ ] Ciclo de iniciación, Hacia el otro lado, Tarot para tarotistas: faltan datos o están en curso.
 - [ ] Grafía de la marca (en_cartada / en cartada) y logo original.
-- [ ] Horario real en `src/config/agenda.ts`.
+- [ ] Confirmar los días de atención (ahora, de lunes a viernes en las dos agendas) en `src/config/agenda.ts`.
 - [ ] Imágenes para las lecturas que aún no tienen collage (sueños, grupales, temporada, astrología).
 - [ ] Más adelante: sincronizar con Google Calendar, área privada con acceso a los cursos y grabaciones.

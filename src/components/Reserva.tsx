@@ -1,21 +1,25 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { agenda } from '@/config/agenda';
+import { agenda, type Region, regionPorZona, regiones } from '@/config/agenda';
 import type { Modalidad, Moneda, Servicio } from '@/content/tipos';
 import { formatearPrecio } from '@/lib/precios';
 import { diaSemana, fechaEnZona, formatearHora, sumarDias } from '@/lib/tiempo';
 import { DatosCliente, datosVacios, SelectorMoneda } from './DatosCliente';
 import { crearPago, PagoEmbebido, pagosActivos } from './PagoEmbebido';
 
-const tz = agenda.zonaHoraria;
 type Hueco = { inicio: string; fin: string };
 
-function dias() {
+function dias(tz: string) {
   const hoy = fechaEnZona(new Date(), tz);
   return Array.from({ length: agenda.diasMaxAdelante + 1 }, (_, i) => sumarDias(hoy, i));
 }
-const tieneHorario = (f: string) => (agenda.horario[diaSemana(f)] ?? []).length > 0 && !agenda.diasBloqueados.includes(f);
+const tieneHorario = (f: string, region: Region) =>
+  (regiones[region].horario[diaSemana(f)] ?? []).length > 0 && !agenda.diasBloqueados.includes(f);
+const franjas = (region: Region) => {
+  const r = [...new Set(Object.values(regiones[region].horario).flat().map(([a, b]) => `${a}–${b}`))];
+  return r.join(', ');
+};
 const nombreMes = (f: string) => new Intl.DateTimeFormat('es-ES', { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(f + 'T12:00:00Z'));
 
 export function Reserva({ servicio }: { servicio: Servicio }) {
@@ -29,29 +33,38 @@ export function Reserva({ servicio }: { servicio: Servicio }) {
   const [cargando, setCargando] = useState(false);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [recarga, setRecarga] = useState(0);
-  const tzLocal = useMemo(() => Intl.DateTimeFormat().resolvedOptions().timeZone, []);
+  // Zona horaria de quien reserva → agenda de Europa o de Colombia (se puede cambiar).
+  const [tzLocal, setTzLocal] = useState<string | null>(null);
+  const [region, setRegion] = useState<Region>('europa');
+  useEffect(() => {
+    const zona = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    setTzLocal(zona);
+    setRegion(regionPorZona(zona));
+  }, []);
+  const tz = regiones[region].zonaHoraria;
+  const cambiarRegion = (r: Region) => { setRegion(r); setFecha(null); setHueco(null); setError(''); };
 
   // Agrupa los días por mes, con huecos al inicio para alinear con lunes.
   const meses = useMemo(() => {
     const grupos = new Map<string, (string | null)[]>();
-    for (const d of dias()) {
+    for (const d of dias(tz)) {
       const k = d.slice(0, 7);
       if (!grupos.has(k)) grupos.set(k, Array((diaSemana(d) + 6) % 7).fill(null));
       grupos.get(k)!.push(d);
     }
     return [...grupos.values()];
-  }, []);
+  }, [tz]);
 
   useEffect(() => {
     if (!fecha) return;
     let vivo = true;
     setHuecos(null);
-    fetch(`/api/disponibilidad?servicio=${servicio.slug}&fecha=${fecha}`)
+    fetch(`/api/disponibilidad?servicio=${servicio.slug}&fecha=${fecha}&region=${region}`)
       .then((r) => r.json())
       .then((j) => vivo && setHuecos(j.huecos ?? []))
       .catch(() => vivo && setHuecos([]));
     return () => { vivo = false; };
-  }, [fecha, servicio.slug, recarga]);
+  }, [fecha, servicio.slug, region, recarga]);
 
   const listo = modalidad && hueco && datos.nombre.trim() && /^\S+@\S+\.\S+$/.test(datos.email);
 
@@ -59,7 +72,7 @@ export function Reserva({ servicio }: { servicio: Servicio }) {
     setError('');
     setCargando(true);
     try {
-      setClientSecret(await crearPago({ tipo: 'servicio', slug: servicio.slug, modalidad, inicio: hueco!.inicio, moneda, ...datos }));
+      setClientSecret(await crearPago({ tipo: 'servicio', slug: servicio.slug, modalidad, region, inicio: hueco!.inicio, moneda, ...datos }));
     } catch (e) {
       setError((e as Error).message);
       setHueco(null);
@@ -75,7 +88,7 @@ export function Reserva({ servicio }: { servicio: Servicio }) {
         <div className="aviso">
           {servicio.nombre} · {modalidad === 'virtual' ? 'Virtual' : 'Presencial (Madrid)'} ·{' '}
           {new Intl.DateTimeFormat('es-ES', { timeZone: tz, weekday: 'long', day: 'numeric', month: 'long' }).format(new Date(hueco!.inicio))},{' '}
-          {formatearHora(hueco!.inicio, tz)} h{' '}
+          {formatearHora(hueco!.inicio, tz)} h ({regiones[region].etiqueta}){' '}
           <button className="opcion boton-chico" style={{ marginLeft: 8 }} onClick={() => setClientSecret(null)}>Cambiar</button>
         </div>
         <PagoEmbebido clientSecret={clientSecret} />
@@ -100,6 +113,17 @@ export function Reserva({ servicio }: { servicio: Servicio }) {
 
       <div className="paso">
         <h2><span>2</span>Elige el día</h2>
+        <div className="zona">
+          <p className="nota">Horarios para:</p>
+          <div className="opciones" role="group" aria-label="Zona horaria de la agenda">
+            {(Object.keys(regiones) as Region[]).map((r) => (
+              <button key={r} type="button" className="opcion" aria-pressed={region === r} onClick={() => cambiarRegion(r)}>
+                {regiones[r].nombre}
+                <small style={{ display: 'block', fontSize: '.8rem', opacity: .8 }}>{franjas(r)} · {regiones[r].etiqueta}</small>
+              </button>
+            ))}
+          </div>
+        </div>
         {meses.map((celdas, i) => (
           <div key={i}>
             <p className="mes">{nombreMes(celdas.find(Boolean)!)}</p>
@@ -107,7 +131,7 @@ export function Reserva({ servicio }: { servicio: Servicio }) {
               {['L', 'M', 'X', 'J', 'V', 'S', 'D'].map((d) => <span key={d} className="dia-semana">{d}</span>)}
               {celdas.map((d, j) =>
                 d ? (
-                  <button key={d} type="button" className="opcion" disabled={!tieneHorario(d)} aria-pressed={fecha === d} onClick={() => { setFecha(d); setHueco(null); }}>
+                  <button key={d} type="button" className="opcion" disabled={!tieneHorario(d, region)} aria-pressed={fecha === d} onClick={() => { setFecha(d); setHueco(null); }}>
                     {+d.slice(8)}
                   </button>
                 ) : <span key={`v${j}`} />,
@@ -119,7 +143,7 @@ export function Reserva({ servicio }: { servicio: Servicio }) {
 
       {fecha && (
         <div className="paso">
-          <h2><span>3</span>Elige la hora <small className="nota">(hora de Madrid)</small></h2>
+          <h2><span>3</span>Elige la hora <small className="nota">({regiones[region].etiqueta})</small></h2>
           {huecos === null ? <p className="nota">Consultando la agenda…</p>
             : huecos.length === 0 ? <p className="nota">No quedan huecos este día. Prueba con otro.</p>
             : (
@@ -127,7 +151,7 @@ export function Reserva({ servicio }: { servicio: Servicio }) {
                 {huecos.map((h) => (
                   <button key={h.inicio} type="button" className="opcion" aria-pressed={hueco?.inicio === h.inicio} onClick={() => setHueco(h)}>
                     {formatearHora(h.inicio, tz)}
-                    {tzLocal !== tz && <small style={{ display: 'block', fontSize: '.8rem', opacity: .75 }}>tu hora {formatearHora(h.inicio, tzLocal)}</small>}
+                    {tzLocal && tzLocal !== tz && <small style={{ display: 'block', fontSize: '.8rem', opacity: .75 }}>tu hora {formatearHora(h.inicio, tzLocal!)}</small>}
                   </button>
                 ))}
               </div>

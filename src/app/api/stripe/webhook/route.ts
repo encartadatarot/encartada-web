@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { agenda } from '@/config/agenda';
+import { agenda, esRegion, regiones } from '@/config/agenda';
 import { sitio } from '@/config/sitio';
 import { getCurso } from '@/content/cursos';
 import { getServicio } from '@/content/servicios';
@@ -26,7 +26,10 @@ export async function POST(req: Request) {
     const raw = s.metadata ?? {};
     const m = Object.fromEntries(Object.entries(raw).map(([k, v]) => [k, esc(v)])) as Record<string, string>;
     const titulo = m.tipo === 'servicio' ? getServicio(raw.slug)?.nombre : getCurso(raw.slug)?.titulo;
-    const cuando = raw.inicio ? `${formatearFechaLarga(raw.inicio, agenda.zonaHoraria)} (hora de Madrid)` : '';
+    // Hora en la agenda que eligió la clienta (Europa o Colombia); para ti, también en hora de Madrid.
+    const r = regiones[esRegion(raw.region) ? raw.region : 'europa'];
+    const cuando = raw.inicio ? `${formatearFechaLarga(raw.inicio, r.zonaHoraria)} (${r.etiqueta})` : '';
+    const cuandoMadrid = raw.inicio && r.zonaHoraria !== agenda.zonaHoraria ? `<br>${formatearFechaLarga(raw.inicio, agenda.zonaHoraria)} (hora de Madrid)` : '';
     const detalle =
       m.tipo === 'servicio'
         ? `<p><b>${titulo ?? m.slug}</b> · ${m.modalidad}<br>${cuando}</p>`
@@ -36,7 +39,7 @@ export async function POST(req: Request) {
     await enviarEmail(
       process.env.EMAIL_AVISOS ?? sitio.email,
       m.tipo === 'servicio' ? `Nueva reserva: ${raw.nombre}` : `Nueva compra: ${raw.nombre}`,
-      `${detalle}<p>${m.nombre} · ${m.email} · ${m.telefono || 'sin teléfono'}</p><p>${m.notas ?? ''}${m.respuesta ? `¿Qué quisieras aprender? ${m.respuesta}` : ''}</p>`,
+      `${detalle.replace('</p>', `${cuandoMadrid}</p>`)}<p>${m.nombre} · ${m.email} · ${m.telefono || 'sin teléfono'}</p><p>${m.notas ?? ''}${m.respuesta ? `¿Qué quisieras aprender? ${m.respuesta}` : ''}</p>`,
     );
     // Confirmación para la clienta (formato de correo de identidad/voz-y-estilo.md)
     const siguiente =

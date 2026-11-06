@@ -263,3 +263,5 @@ fieldset.campo { border: 0; padding: 0; margin: 0; }
 fieldset.campo legend { font-size: 1rem; color: var(--texto-suave); margin-bottom: 6px; padding: 0; }
 .opciones-columna { flex-direction: column; align-items: stretch; }
 .opciones-columna .opcion { text-align: left; }
+.zona { margin: 0 0 18px; }
+.zona .nota { margin: 0 0 6px; }
