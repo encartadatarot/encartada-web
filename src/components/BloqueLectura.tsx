@@ -10,10 +10,12 @@ import { tieneCollage } from '@/content/collages';
 import { CollageAnimado } from './CollageAnimado';
 import { formatear, Texto } from './Texto';
 
+/** «Virtual o presencial» en sueños y astrología, «Virtual y presencial» en tarot, como en la web de Canva. */
 export function modalidadTexto(s: Servicio) {
+  const enlace = ['suenos', 'astrologia'].includes(s.categoria) ? 'o' : 'y';
   const v = s.modalidades.includes('virtual');
   const p = s.modalidades.includes('presencial');
-  return v && p ? 'Virtual y presencial (Madrid)' : v ? 'Virtual' : 'Presencial (Madrid)';
+  return v && p ? `Virtual ${enlace} presencial (Madrid)` : v ? 'Virtual' : 'Presencial (Madrid)';
 }
 
 export function detalleLectura(s: Servicio) {

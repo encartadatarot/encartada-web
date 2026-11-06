@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { formatear } from '@/components/Texto';
 import { sitio } from '@/config/sitio';
 import { imagen } from '@/content/imagenes';
 
@@ -12,22 +11,21 @@ export default function Inicio() {
         <Image {...imagen('/img/inicio/mosaico.webp')} alt={`${sitio.nombre}: emblema del corazón con espadas y llama entre cartas de tarot`} priority sizes="100vw" />
       </section>
 
-      <div className="contenedor centro" style={{ marginTop: 28 }}>
-        <p className="lema">{formatear(sitio.lema)}</p>
-      </div>
-
       <section className="contenedor quien-soy acento-rojo">
         <div>
           <h2 className="gotica acento">¿quién soy?</h2>
           <p>
-            <strong><em>Artista</em></strong> visual y escénica; iniciada en el <strong><em>tarot</em></strong> por mi madre y mi abuela;
-            y <strong><em>astróloga</em></strong> helenística, dedico mi trabajo a tenderte <strong><em>puentes de traducción</em></strong> entre
-            los oráculos, la historia del arte, la filosofía, la literatura y el psicoanálisis.
+            <strong><em>Artista</em></strong> visual y escénica; iniciada en el <strong><em>tarot</em></strong> por mi madre;
+            y <strong><em>astróloga</em></strong> helenística.
+          </p>
+          <p>
+            Dedico mi trabajo a tenderte <strong><em>puentes de traducción</em></strong> entre los oráculos, la historia del arte,
+            la filosofía, la literatura, el esoterismo y el psicoanálisis.
           </p>
         </div>
         <p className="quien-soy-cita">
-          Mi oficio es enseñarte cómo leerte <em>simbólicamente</em>, <em>para que veas</em> y <em>nombres</em> con hondura tu vida y, así,
-          puedas crearla con <em>más lucidez</em>.
+          Mi oficio es enseñarte a leer <em>simbólicamente tu vida, para que la nombres</em> con claridad y hondura y puedas crearla
+          con mayor <em>lucidez</em>.
         </p>
         <span className="flota quien-soy-imagen"><Image {...imagen('/img/inicio/xxi.webp')} alt="" sizes="200px" /></span>
       </section>
@@ -43,7 +41,6 @@ export default function Inicio() {
         </Link>
         <div className="portada-lema flota">
           <Image {...imagen('/img/inicio/lema.webp')} alt="" sizes="(max-width: 760px) 90vw, 420px" />
-          <p>{formatear(sitio.lema)}</p>
         </div>
       </section>
     </>

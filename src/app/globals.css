@@ -220,7 +220,7 @@ a.tarjeta:hover { border-color: var(--acento); transform: translateY(-2px); }
 .mosaico img { width: 100%; height: auto; }
 .quien-soy { display: grid; grid-template-columns: 1fr 1.25fr 180px; gap: 40px; align-items: center; padding: 56px 0 24px; }
 .quien-soy h2 { font-size: clamp(2.6rem, 5vw, 3.6rem); }
-.quien-soy p { font-size: 1.45rem; line-height: 1.25; margin: 0; }
+.quien-soy p { font-size: 1.45rem; line-height: 1.25; margin: 0 0 .6em; }
 .quien-soy .quien-soy-cita { font-size: clamp(1.9rem, 3.4vw, 2.7rem); line-height: 1.12; text-align: right; }
 .quien-soy-imagen { width: 100%; }
 .portada-columnas { display: grid; grid-template-columns: 1fr 1fr 1.6fr; gap: 32px; align-items: start; padding: 48px 0 0; }

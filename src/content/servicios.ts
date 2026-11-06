@@ -19,7 +19,7 @@ export const servicios: Servicio[] = [
     modalidades: ['virtual', 'presencial'],
     precios: { eur: 50, usd: 60, cop: 165000 },
     descripcion: [
-      'Te muestra el nudo del _corazón_ en el ==presente==, te dirige a los _hilos_ del ==pasado== para que lo _desenredes_ y puedas amar _libremente_ en el ==futuro==.',
+      'Te muestra el nudo del _corazón_ en el ==presente==, te dirige a los _hilos_ del ==pasado== para que lo _desenredes_ y puedas ser y amar _libremente_ en el ==futuro==.',
     ],
   },
   {
@@ -31,7 +31,7 @@ export const servicios: Servicio[] = [
     acento: 'verde',
     imagen: '/img/lecturas/la-encrucijada.webp',
     cartas: 7,
-    duracionMin: 75,
+    duracionMin: 90,
     modalidades: ['virtual', 'presencial'],
     precios: { eur: 60, usd: 70, cop: 190000 },
     descripcion: [
@@ -52,7 +52,7 @@ export const servicios: Servicio[] = [
     modalidades: ['virtual', 'presencial'],
     precios: { eur: 70, usd: 80, cop: 220000 },
     descripcion: [
-      'Te ayuda a transitar periodos de **_duelo y dar lugar a tu relación con lo muerto._**',
+      'Te ayuda a transitar periodos de **_duelo y dar lugar a tu relación con lo muerto y los muertos._**',
       'Te muestra el camino de la **pérdida**, a través de la **negociación**, para darle un nuevo lugar a lo que ya no está y abre espacio a lo que está por **nacer**.',
     ],
   },
@@ -64,7 +64,7 @@ export const servicios: Servicio[] = [
     publicado: true,
     acento: 'dorado',
     imagen: '/img/lecturas/el-tropo.webp',
-    // cartas: 9 en la web, 8 en el PDF 2023 → [por confirmar], no se publica hasta confirmarlo
+    cartas: 8, // actualizado en la web de Canva (antes decía 9)
     duracionMin: 105,
     modalidades: ['virtual', 'presencial'],
     precios: { eur: 80, usd: 90, cop: 250000 },
@@ -86,7 +86,7 @@ export const servicios: Servicio[] = [
     modalidades: ['virtual', 'presencial'],
     precios: { eur: 55, usd: 65, cop: 185000 },
     descripcion: ['Cuando _escribes_ el sueño, buscando su medida en tus palabras, te enfrentas a los ==puntos ciegos== que no logras iluminar.'],
-    preparacion: 'Escribe el sueño y envíalo dos días antes. Registra los elementos que recuerdes: espacios, objetos, personajes, situaciones y emociones.',
+    preparacion: 'Para preparar tu sesión escríbelo y envíamelo dos días antes de nuestro encuentro. Registra los elementos que recuerdes: espacios, objetos, personajes, situaciones y emociones.',
     antelacionMinHoras: 72,
   },
   {
@@ -151,7 +151,7 @@ export const servicios: Servicio[] = [
     precios: { eur: 80, usd: 90, cop: 250000 },
     descripcion: [
       'Para _cerrar_ y _prever_, temporada a temporada, mes a mes, lo que te depara ==el año que empieza==.',
-      'Recomendada para que ordenes tu calendario anual acorde al ritmo de los astros.',
+      'Recomendada para que ordenes tu calendario anual acorde al ritmo de los tránsitos astrológicos.',
     ],
   },
 

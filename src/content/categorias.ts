@@ -19,7 +19,7 @@ export const categorias: Categoria[] = [
     oraculo: 'terrestre',
     rotulo: 'Tiradas individuales',
     intro: [
-      '_Las lecturas funcionan por tiempo. Entre más tiempo, podemos abarcar más temas y más profundidad._',
+      '_Las lecturas funcionan por tiempo y cantidad de cartas. Entre más tiempo, podemos abarcar más temas e ir más profundo._',
       '_Tú decides cuánto tiempo invertir._',
     ],
   },

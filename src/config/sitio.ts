@@ -3,7 +3,7 @@ export const sitio = {
   autora: 'Camila',
   // Lema y presentación: palabras de Camila (README del repositorio encartada).
   lema: '_Pensemos_ la imagen, hagámosla _cuerpo_.',
-  descripcion: 'Mi oficio es enseñarte cómo leerte simbólicamente, para que veas y nombres con hondura tu vida y, así, puedas crearla con más lucidez.',
+  descripcion: 'Mi oficio es enseñarte a leer simbólicamente tu vida, para que la nombres con claridad y hondura y puedas crearla con mayor lucidez.',
   whatsapp: '34667772711',
   instagram: 'https://www.instagram.com/en_cartada/',
   email: 'encartada.tarot@gmail.com',

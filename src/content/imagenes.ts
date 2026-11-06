@@ -7,7 +7,7 @@ export const tamanos: Record<string, [number, number]> = {
   '/img/cursos/la-brevisima-historia-del-tarot.webp': [940, 1192],
   '/img/cursos/de-que-hablamos-cuando-hablamos-de-mistica.webp': [920, 1122],
   '/img/inicio/aprende.webp': [400, 1180],
-  '/img/inicio/lema.webp': [844, 1434],
+  '/img/inicio/lema.webp': [832, 1423],
   '/img/inicio/mosaico.webp': [1800, 1009],
   '/img/inicio/oraculo.webp': [396, 1064],
   '/img/inicio/xxi.webp': [432, 1536],
