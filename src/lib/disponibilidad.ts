@@ -5,29 +5,43 @@ import { stripe } from './stripe';
 import { diaSemana, esFecha, fechaEnZona, horaLocalAUtc, sumarDias } from './tiempo';
 
 const tzBase = agenda.zonaHoraria;
+const MIN = 60000;
 type Intervalo = { inicio: number; fin: number };
 
-/** ¿Se puede reservar ese día (en la hora local de la región)? */
+/** ¿Se puede reservar ese día (en la hora local de la agenda)? */
 export function fechaPermitida(fecha: string, tz: string) {
   const hoy = fechaEnZona(new Date(), tz);
   return fecha >= hoy && fecha <= sumarDias(hoy, agenda.diasMaxAdelante);
 }
 
 /**
- * Citas ya pagadas alrededor de ese día. Usamos el propio Stripe como "base de datos" de reservas
- * (cada pago guarda en sus metadatos la fecha en hora de Madrid, el inicio y el fin).
- * Se miran también el día anterior y el siguiente porque Madrid y América no comparten fecha a toda hora.
+ * Citas pagadas de las próximas semanas. Usamos el propio Stripe como "base de datos" de reservas:
+ * cada pago guarda en sus metadatos el inicio y el fin de la cita. Como solo se puede reservar con
+ * `diasMaxAdelante` días de antelación, basta con mirar los pagos creados en ese periodo.
+ * Se guarda en memoria 30 s para no consultar Stripe en cada día del calendario.
  */
-async function reservasPagadas(fecha: string): Promise<Intervalo[]> {
+let cache: { hasta: number; citas: Intervalo[] } | null = null;
+
+async function citasPagadas(fresco = false): Promise<Intervalo[]> {
   if (!stripe) return [];
-  const fechas = [sumarDias(fecha, -1), fecha, sumarDias(fecha, 1)];
-  const res = await stripe.paymentIntents.search({
-    query: fechas.map((f) => `metadata['fecha']:'${f}'`).join(' OR '),
-    limit: 100,
-  });
-  return res.data
-    .filter((pi) => pi.status === 'succeeded' && pi.metadata.inicio && pi.metadata.fin)
-    .map((pi) => ({ inicio: Date.parse(pi.metadata.inicio), fin: Date.parse(pi.metadata.fin) }));
+  if (!fresco && cache && cache.hasta > Date.now()) return cache.citas;
+  const desde = Math.floor(Date.now() / 1000) - (agenda.diasMaxAdelante + 2) * 86400;
+  const citas: Intervalo[] = [];
+  let page: string | undefined;
+  do {
+    const res = await stripe.paymentIntents.search({
+      query: `status:'succeeded' AND metadata['tipo']:'servicio' AND created>${desde}`,
+      limit: 100,
+      ...(page ? { page } : {}),
+    });
+    for (const pi of res.data) {
+      const inicio = Date.parse(pi.metadata.inicio ?? ''), fin = Date.parse(pi.metadata.fin ?? '');
+      if (inicio && fin) citas.push({ inicio, fin });
+    }
+    page = res.has_more ? (res.next_page ?? undefined) : undefined;
+  } while (page);
+  cache = { hasta: Date.now() + 30_000, citas };
+  return citas;
 }
 
 /** Citas apuntadas a mano y días bloqueados (en hora de Madrid), como intervalos absolutos. */
@@ -44,35 +58,57 @@ function pausas(fecha: string): Intervalo[] {
   );
 }
 
+/** Minutos de citas que ya hay en un día de Madrid (para el máximo diario). */
+function minutosDelDia(fechaMadrid: string, citas: Intervalo[]) {
+  const ini = +horaLocalAUtc(fechaMadrid, '00:00', tzBase);
+  const fin = +horaLocalAUtc(sumarDias(fechaMadrid, 1), '00:00', tzBase);
+  return citas.reduce((total, c) => total + Math.max(0, Math.min(c.fin, fin) - Math.max(c.inicio, ini)) / MIN, 0);
+}
+
 export type Hueco = { inicio: string; fin: string };
 
 /**
  * Huecos libres de un día, según el horario de la agenda (Europa, o América en la hora de quien reserva).
- * `fecha` está en la zona de la agenda.
+ * `fecha` está en la zona de la agenda. Reglas: solo horas en punto, sin chocar con otras citas
+ * (con descanso) ni con la pausa diaria, y sin pasar el máximo de horas de citas de ese día.
  */
-export async function huecosDisponibles(servicio: Servicio, fecha: string, region: Region, zonaVisitante?: string | null): Promise<Hueco[]> {
+export async function huecosDisponibles(
+  servicio: Servicio, fecha: string, region: Region, zonaVisitante?: string | null, opciones: { fresco?: boolean } = {},
+): Promise<Hueco[]> {
   const tz = zonaDeAgenda(region, zonaVisitante);
   if (!esFecha(fecha) || !fechaPermitida(fecha, tz)) return [];
-  const { horario } = regiones[region];
-  const rangos = horario[diaSemana(fecha)] ?? [];
+  const rangos = regiones[region].horario[diaSemana(fecha)] ?? [];
   if (!rangos.length) return [];
 
-  const duracion = servicio.duracionMin * 60000;
-  const descanso = agenda.descansoMin * 60000;
+  const duracion = servicio.duracionMin * MIN;
+  const descanso = agenda.descansoMin * MIN;
   const minimo = Date.now() + (servicio.antelacionMinHoras ?? agenda.antelacionMinHoras) * 3600000;
-  const ocupado = [...(await reservasPagadas(fecha)), ...ocupadoManual()];
+  const citas = [...(await citasPagadas(opciones.fresco)), ...ocupadoManual()];
   const pausa = pausas(fecha); // sin descanso extra: una cita puede terminar a las 12:00 y empezar a las 14:00
 
   const huecos: Hueco[] = [];
   for (const [desde, hasta] of rangos) {
     const fin = +horaLocalAUtc(fecha, hasta, tz);
-    for (let t = +horaLocalAUtc(fecha, desde, tz); t + duracion <= fin; t += agenda.intervaloMin * 60000) {
+    for (let t = +horaLocalAUtc(fecha, desde, tz); t + duracion <= fin; t += agenda.intervaloMin * MIN) {
       if (t < minimo) continue;
       const choca =
-        ocupado.some((o) => t < o.fin + descanso && t + duracion + descanso > o.inicio) ||
+        citas.some((o) => t < o.fin + descanso && t + duracion + descanso > o.inicio) ||
         pausa.some((o) => t < o.fin && t + duracion > o.inicio);
-      if (!choca) huecos.push({ inicio: new Date(t).toISOString(), fin: new Date(t + duracion).toISOString() });
+      if (choca) continue;
+      // Máximo de horas de citas en ese día de Madrid.
+      if (minutosDelDia(fechaEnZona(new Date(t), tzBase), citas) + servicio.duracionMin > agenda.maxMinutosPorDia) continue;
+      huecos.push({ inicio: new Date(t).toISOString(), fin: new Date(t + duracion).toISOString() });
     }
   }
   return huecos;
+}
+
+/** Días del calendario que aún tienen algún hueco para esta lectura (los demás se muestran bloqueados). */
+export async function diasDisponibles(servicio: Servicio, region: Region, zonaVisitante?: string | null): Promise<string[]> {
+  const tz = zonaDeAgenda(region, zonaVisitante);
+  const hoy = fechaEnZona(new Date(), tz);
+  const fechas = Array.from({ length: agenda.diasMaxAdelante + 1 }, (_, i) => sumarDias(hoy, i));
+  await citasPagadas(); // una sola consulta a Stripe para todos los días
+  const libres = await Promise.all(fechas.map(async (f) => ((await huecosDisponibles(servicio, f, region, zonaVisitante)).length ? f : null)));
+  return libres.filter((f): f is string => f !== null);
 }

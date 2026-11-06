@@ -45,7 +45,7 @@ export async function POST(req: Request) {
     const inicio = texto(body.inicio, 40);
     const valido = inicio && !Number.isNaN(Date.parse(inicio));
     const fechaRegion = valido ? fechaEnZona(new Date(inicio), tzRegion) : '';
-    const hueco = valido ? (await huecosDisponibles(servicio, fechaRegion, region, tzRegion)).find((h) => h.inicio === inicio) : undefined;
+    const hueco = valido ? (await huecosDisponibles(servicio, fechaRegion, region, tzRegion, { fresco: true })).find((h) => h.inicio === inicio) : undefined;
     if (!hueco) return error('Ese horario ya no está disponible, elige otro por favor.', 409);
     // En los metadatos la fecha va siempre en hora de Madrid: así se buscan las citas ocupadas.
     const fecha = fechaEnZona(new Date(hueco.inicio), agenda.zonaHoraria);

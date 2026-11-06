@@ -44,6 +44,19 @@ export function Reserva({ servicio }: { servicio: Servicio }) {
   const etiqueta = tz === tzLocal ? 'tu hora' : nombreZona(tz);
   const cambiarRegion = (r: Region) => { setRegion(r); setFecha(null); setHueco(null); setError(''); };
 
+  // Días con algún hueco para esta lectura: los demás (llenos, fines de semana…) se ven bloqueados.
+  const [diasLibres, setDiasLibres] = useState<Set<string> | null>(null);
+  useEffect(() => {
+    if (!tzLocal) return;
+    let vivo = true;
+    setDiasLibres(null);
+    fetch(`/api/disponibilidad?servicio=${servicio.slug}&region=${region}&zona=${encodeURIComponent(tz)}&dias=1`)
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((j) => vivo && setDiasLibres(new Set(j.dias ?? [])))
+      .catch(() => vivo && setDiasLibres(new Set(dias(tz).filter((d) => tieneHorario(d, region))))); // si falla, solo el horario
+    return () => { vivo = false; };
+  }, [servicio.slug, region, tz, tzLocal, recarga]);
+
   // Agrupa los días por mes, con huecos al inicio para alinear con lunes.
   const meses = useMemo(() => {
     const grupos = new Map<string, (string | null)[]>();
@@ -126,6 +139,8 @@ export function Reserva({ servicio }: { servicio: Servicio }) {
             ))}
           </div>
         </div>
+        {diasLibres === null && <p className="nota">Consultando los días disponibles…</p>}
+        {diasLibres?.size === 0 && <p className="nota">No quedan días libres para esta lectura en las próximas semanas.</p>}
         {meses.map((celdas, i) => (
           <div key={i}>
             <p className="mes">{nombreMes(celdas.find(Boolean)!)}</p>
@@ -133,7 +148,7 @@ export function Reserva({ servicio }: { servicio: Servicio }) {
               {['L', 'M', 'X', 'J', 'V', 'S', 'D'].map((d) => <span key={d} className="dia-semana">{d}</span>)}
               {celdas.map((d, j) =>
                 d ? (
-                  <button key={d} type="button" className="opcion" disabled={!tieneHorario(d, region)} aria-pressed={fecha === d} onClick={() => { setFecha(d); setHueco(null); }}>
+                  <button key={d} type="button" className="opcion" disabled={!diasLibres?.has(d)} aria-pressed={fecha === d} onClick={() => { setFecha(d); setHueco(null); }}>
                     {+d.slice(8)}
                   </button>
                 ) : <span key={`v${j}`} />,

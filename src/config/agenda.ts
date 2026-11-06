@@ -64,8 +64,10 @@ export const agenda = {
   /** Zona de referencia para tus avisos y para `diasBloqueados` / `ocupadoManual`. */
   zonaHoraria: 'Europe/Madrid',
 
-  /** Cada cuántos minutos puede empezar una cita (9:00, 9:30, …). */
-  intervaloMin: 30,
+  /** Cada cuántos minutos puede empezar una cita. 60 = solo a horas en punto (9:00, 10:00, …). */
+  intervaloMin: 60,
+  /** Máximo de minutos de citas por día (en hora de Madrid, sumando las dos agendas). 240 = 4 horas. */
+  maxMinutosPorDia: 240,
   /** Descanso mínimo entre una cita y la siguiente. */
   descansoMin: 15,
   /** Con cuánta antelación mínima se puede reservar. */
