@@ -1,10 +1,12 @@
 import { NextResponse } from 'next/server';
-import { calendarioConectado, eventosOcupados } from '@/lib/google-calendar';
+import { borrarEvento, calendarioConectado, crearEventoCita, eventosOcupados } from '@/lib/google-calendar';
 
 export const dynamic = 'force-dynamic';
 
 /** Diagnóstico: ¿está conectado Google Calendar y se puede leer? (No muestra eventos.) */
-export async function GET() {
+export async function GET(req: Request) {
+  const url = new URL(req.url);
+  if (url.searchParams.get('prueba') === 'escritura') return pruebaEscritura(url.searchParams.get('token'));
   if (!calendarioConectado()) {
     return NextResponse.json({ conectado: false, mensaje: 'Faltan GOOGLE_CALENDAR_ID o una clave válida en GOOGLE_SERVICE_ACCOUNT_JSON.', clave: revisarClave() });
   }
@@ -53,5 +55,35 @@ function revisarClave() {
     };
   } catch {
     return { ...base, esJSON: false };
+  }
+}
+
+/**
+ * Prueba de escritura: crea un evento «Prueba de conexión» y lo borra enseguida.
+ * Solo funciona si existe PRUEBA_CALENDARIO_TOKEN en Vercel y se pasa ese mismo token.
+ */
+async function pruebaEscritura(token: string | null) {
+  const esperado = process.env.PRUEBA_CALENDARIO_TOKEN;
+  if (!esperado || token !== esperado) return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+  const referencia = `prueba-${Date.now()}`;
+  const inicio = new Date(Date.now() + 2 * 86400000);
+  inicio.setUTCHours(22, 0, 0, 0); // 23:00 en Madrid aprox., fuera de tu horario de citas
+  try {
+    await crearEventoCita({
+      referencia,
+      titulo: 'Prueba de conexión de la web (se borra sola)',
+      descripcion: 'Evento de prueba creado por encartada-web. Se borra automáticamente.',
+      inicio: inicio.toISOString(),
+      fin: new Date(inicio.getTime() + 15 * 60000).toISOString(),
+    });
+  } catch (e) {
+    const msg = (e as Error).message;
+    return NextResponse.json({ escritura: 'error', estado: msg.match(/\((\d{3})\)/)?.[1] ?? null, codigo: msg.match(/"reason":\s*"([^"]+)"/)?.[1] ?? null }, { status: 500 });
+  }
+  try {
+    await borrarEvento(referencia);
+    return NextResponse.json({ escritura: 'ok', creado: true, borrado: true });
+  } catch {
+    return NextResponse.json({ escritura: 'ok', creado: true, borrado: false, aviso: 'Se creó pero no se pudo borrar: bórralo a mano.' });
   }
 }

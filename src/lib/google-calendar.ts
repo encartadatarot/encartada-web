@@ -107,6 +107,15 @@ export async function eventosOcupados(desde: Date, hasta: Date): Promise<Ocupado
   return ocupados;
 }
 
+const idEvento = (referencia: string) => createHash('sha256').update(referencia).digest('hex').slice(0, 40); // Google admite [a-v0-9]
+
+/** Borra el evento creado para una referencia (se usa en la prueba de conexión). */
+export async function borrarEvento(referencia: string): Promise<void> {
+  if (!calendarioConectado()) return;
+  const r = await google(`/events/${idEvento(referencia)}`, { method: 'DELETE' });
+  if (!r.ok && r.status !== 404 && r.status !== 410) throw new Error(`No se pudo borrar el evento (${r.status}): ${await r.text()}`);
+}
+
 /**
  * Crea en tu calendario el evento de una cita pagada. Usa un id fijo derivado del pago,
  * así que si Stripe avisa dos veces no se duplica.
@@ -115,7 +124,7 @@ export async function crearEventoCita(cita: {
   referencia: string; titulo: string; descripcion: string; inicio: string; fin: string; ubicacion?: string;
 }): Promise<void> {
   if (!calendarioConectado()) return;
-  const id = createHash('sha256').update(cita.referencia).digest('hex').slice(0, 40); // Google admite [a-v0-9]
+  const id = idEvento(cita.referencia);
   const r = await google('/events', {
     method: 'POST',
     body: JSON.stringify({
