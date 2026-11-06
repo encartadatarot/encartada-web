@@ -17,7 +17,21 @@ export async function GET() {
     const pista = /\(404\)/.test(msg) ? 'El calendario no está compartido con la cuenta de servicio, o GOOGLE_CALENDAR_ID no es correcto.'
       : /\(40[13]\)|rechazó/.test(msg) ? 'La cuenta de servicio no tiene permiso, o la clave no es válida. Revisa que compartiste el calendario con «Hacer cambios en eventos».'
       : 'Error al conectar con Google.';
-    return NextResponse.json({ conectado: true, lectura: 'error', mensaje: pista }, { status: 500 });
+    // Código de error de Google (p. ej. accessNotConfigured, invalid_grant, notFound): no contiene datos secretos.
+    const codigo = msg.match(/"reason":\s*"([^"]+)"/)?.[1] ?? msg.match(/"error":\s*"([^"]+)"/)?.[1] ?? null;
+    const estado = msg.match(/\((\d{3})\)/)?.[1] ?? null;
+    const enToken = /rechazó/.test(msg);
+    const explicacion: Record<string, string> = {
+      accessNotConfigured: 'La Google Calendar API no está habilitada en el proyecto de Google Cloud (Parte 2).',
+      SERVICE_DISABLED: 'La Google Calendar API no está habilitada en el proyecto de Google Cloud (Parte 2).',
+      notFound: 'El calendario no está compartido con la cuenta de servicio (Parte 5).',
+      forbidden: 'El calendario está compartido, pero sin el permiso «Hacer cambios en eventos» (Parte 5).',
+      invalid_grant: 'Google no acepta la clave: puede que se borrara en Google Cloud o que el reloj no cuadre.',
+    };
+    return NextResponse.json(
+      { conectado: true, lectura: 'error', mensaje: (codigo && explicacion[codigo]) || pista, detalle: { paso: enToken ? 'clave' : 'calendario', estado, codigo } },
+      { status: 500 },
+    );
   }
 }
 
