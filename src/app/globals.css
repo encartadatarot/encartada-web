@@ -276,8 +276,8 @@ fieldset.campo legend { font-size: 1rem; color: var(--texto-suave); margin-botto
 .collage.en-vista .collage-capa { animation-play-state: running; }
 @keyframes balanceo {
   0%, 100% { transform: translate(0, 0) rotate(0deg); }
-  30% { transform: translate(var(--dx), calc(var(--dy) * -1)) rotate(var(--giro)); }
-  65% { transform: translate(calc(var(--dx) * -0.6), var(--dy)) rotate(calc(var(--contragiro) * -1)); }
+  30% { transform: translate(calc(var(--dx) * var(--k, 1)), calc(var(--dy) * -1 * var(--k, 1))) rotate(calc(var(--giro) * var(--k, 1))); }
+  65% { transform: translate(calc(var(--dx) * -0.6 * var(--k, 1)), calc(var(--dy) * var(--k, 1))) rotate(calc(var(--contragiro) * -1 * var(--k, 1))); }
 }
 @media (prefers-reduced-motion: reduce) { .collage-capa { animation: none; } }
 
@@ -297,23 +297,26 @@ fieldset.campo legend { font-size: 1rem; color: var(--texto-suave); margin-botto
 }
 
 /* ─── Movimiento al pasar el ratón (imágenes que en Canva estaban quietas) ─── */
-.collage.al-pasar .collage-capa { animation-play-state: paused; }
+/* Al pasar el ratón o al tocar (móvil: clase .tocado durante unos segundos): más rápido y más visible. */
+.collage.al-pasar .collage-capa { animation-play-state: paused; --k: 1.7; animation-duration: calc(var(--duracion) * 0.6); }
 .collage.al-pasar:hover .collage-capa,
+.collage.al-pasar.tocado .collage-capa,
 a:hover .collage.al-pasar .collage-capa,
+a.tocado .collage.al-pasar .collage-capa,
 a:focus-visible .collage.al-pasar .collage-capa { animation-play-state: running; }
-.flota img { animation: flotar 4.8s ease-in-out infinite; animation-play-state: paused; }
-.flota:hover img, a.flota:focus-visible img { animation-play-state: running; }
+.flota img { animation: flotar 3s ease-in-out infinite; animation-play-state: paused; }
+.flota:hover img, .flota.tocado img, a.flota:focus-visible img { animation-play-state: running; }
 @keyframes flotar {
   0%, 100% { transform: translate(0, 0) rotate(0deg); }
-  30% { transform: translate(0.8%, -1%) rotate(1.4deg); }
-  65% { transform: translate(-0.6%, 0.8%) rotate(-0.9deg); }
+  30% { transform: translate(1.3%, -1.6%) rotate(2.4deg); }
+  65% { transform: translate(-1%, 1.3%) rotate(-1.6deg); }
 }
 .mosaico { overflow: hidden; }
-.mosaico.flota img { animation-name: flotar-mosaico; animation-duration: 7s; }
+.mosaico.flota img { animation-name: flotar-mosaico; animation-duration: 4.5s; }
 @keyframes flotar-mosaico {
   0%, 100% { transform: scale(1.0); }
-  35% { transform: scale(1.025) translate(0.4%, -0.3%) rotate(0.3deg); }
-  70% { transform: scale(1.02) translate(-0.4%, 0.3%) rotate(-0.25deg); }
+  35% { transform: scale(1.04) translate(0.6%, -0.4%) rotate(0.45deg); }
+  70% { transform: scale(1.035) translate(-0.6%, 0.4%) rotate(-0.4deg); }
 }
 @media (prefers-reduced-motion: reduce) { .flota img, .mosaico.flota img, .collage.al-pasar .collage-capa { animation: none; } }
 .carta-collage { width: 100%; max-width: 260px; }

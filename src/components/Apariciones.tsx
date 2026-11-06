@@ -59,6 +59,27 @@ export function Letras({ children, as: Tag = 'span', className, style }: {
   );
 }
 
+/**
+ * En pantallas táctiles no hay «pasar el ratón»: al tocar una imagen quieta, se mueve unos segundos
+ * (clase .tocado, con las mismas reglas que :hover).
+ */
+export function MovimientoAlTocar() {
+  useEffect(() => {
+    const temporizadores = new WeakMap<Element, number>();
+    const alTocar = (e: TouchEvent) => {
+      const el = (e.target as Element | null)?.closest('.flota, .collage.al-pasar');
+      const objetivo = el?.classList.contains('collage') ? (el.closest('a') ?? el) : el;
+      if (!objetivo) return;
+      objetivo.classList.add('tocado');
+      clearTimeout(temporizadores.get(objetivo));
+      temporizadores.set(objetivo, window.setTimeout(() => objetivo.classList.remove('tocado'), 3500));
+    };
+    document.addEventListener('touchstart', alTocar, { passive: true });
+    return () => document.removeEventListener('touchstart', alTocar);
+  }, []);
+  return null;
+}
+
 /** Funde cada imagen de la página al entrar en pantalla (también las que aparecen al navegar). */
 export function ObservadorApariciones() {
   const ruta = usePathname();

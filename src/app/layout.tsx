@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { Cormorant_Garamond, Italiana, UnifrakturMaguntia } from 'next/font/google';
-import { ObservadorApariciones } from '@/components/Apariciones';
+import { MovimientoAlTocar, ObservadorApariciones } from '@/components/Apariciones';
 import { Cabecera } from '@/components/Cabecera';
 import { Pie } from '@/components/Pie';
 import { sitio } from '@/config/sitio';
@@ -27,6 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <ObservadorApariciones />
+        <MovimientoAlTocar />
         <Cabecera />
         <main>{children}</main>
         <Pie />
