@@ -15,7 +15,7 @@ export default function Inicio() {
 
       <p className="contenedor lema-portada">{formatear(sitio.lema)}</p>
 
-      <section className="contenedor quien-soy acento-rojo">
+      <section className="contenedor quien-soy acento-lema">
         <div>
           <h2 className="gotica acento">¿quién soy?</h2>
           <p>
@@ -34,7 +34,7 @@ export default function Inicio() {
         <span className="flota quien-soy-imagen"><Image {...imagen('/img/inicio/xxi.webp')} alt="" sizes="200px" /></span>
       </section>
 
-      <section className="contenedor portada-columnas acento-rojo">
+      <section className="contenedor portada-columnas acento-lema">
         <Link href="/oraculos" className="carta-enlace flota">
           <h2 className="gotica acento">ven al oráculo</h2>
           <Image {...imagen('/img/inicio/oraculo.webp')} alt="" sizes="200px" />

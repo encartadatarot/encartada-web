@@ -23,7 +23,7 @@ export function Cabecera() {
               </li>
             ))}
           </ul>
-          <Link href="/reservar" className="boton boton-chico acento-rojo">Pide tu cita</Link>
+          <Link href="/reservar" className="boton boton-chico acento-lema">Pide tu cita</Link>
         </nav>
 
         <MenuMovil menu={menu} />

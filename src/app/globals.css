@@ -11,6 +11,7 @@
   --plata: #9db4b5;
   --azul: #5a7fb8;
   --gris: #8fa2b6; /* gris azulado */
+  --lema: #eb4b2c; /* rojo del lema: portada y botón «Pide tu cita» */
   --acento: var(--dorado);
   --radio: 999px;
   --ancho: 1120px;
@@ -38,6 +39,7 @@ a { color: inherit; }
 .acento-plata { --acento: var(--plata); }
 .acento-azul { --acento: var(--azul); }
 .acento-gris { --acento: var(--gris); }
+.acento-lema { --acento: var(--lema); }
 .acento { color: var(--acento); }
 
 .gotica { font-family: var(--f-gotica), serif; font-weight: 400; letter-spacing: 0.01em; }
@@ -336,7 +338,7 @@ a:focus-visible .collage.al-pasar .collage-capa { animation-play-state: running;
 .reserva-resumen .flota img { max-width: 220px; margin: 0 auto 16px; }
 
 /* Lema bajo el mosaico de la portada */
-.lema-portada { color: #eb4b2c; text-align: center; font-size: clamp(2rem, 4.6vw, 3.2rem); line-height: 1.15; margin-top: 36px; margin-bottom: 0; }
+.lema-portada { color: var(--lema); text-align: center; font-size: clamp(2rem, 4.6vw, 3.2rem); line-height: 1.15; margin-top: 36px; margin-bottom: 0; }
 
 /* Mosaico de la portada: las piezas se encienden una a una (como en Canva) */
 .mosaico-capas { position: relative; width: 100%; }

@@ -41,7 +41,7 @@ export function MenuMovil({ menu }: { menu: typeof Menu }) {
       </button>
       {abierto && (
         <nav id="menu-movil-panel" className="panel" aria-label="Principal">
-          <p className="menu-cta"><Link href="/reservar" onClick={cerrar} className="boton acento-rojo">Pide tu cita</Link></p>
+          <p className="menu-cta"><Link href="/reservar" onClick={cerrar} className="boton acento-lema">Pide tu cita</Link></p>
           <ul>
             {menu.map((m) => (
               <li key={m.href}>
