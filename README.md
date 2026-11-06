@@ -39,7 +39,7 @@ Las URLs antiguas de Canva (`/orculos`, `/page-6`, …) redirigen a las nuevas (
 
 ## Cómo funcionan las reservas
 
-1. `/api/disponibilidad` calcula los huecos libres a partir de `src/config/agenda.ts`, quitando las citas ya pagadas. Hay dos agendas: **Europa**, mañana y tarde (9:00-19:00, hora de Madrid), y **América**, las mañanas de cada persona (8:00-12:00 en su hora local; si no está en América, hora de Colombia). El calendario muestra la de la zona horaria de quien reserva y se puede cambiar con un selector. Una cita en una agenda bloquea ese momento en la otra.
+1. `/api/disponibilidad` calcula los huecos libres a partir de `src/config/agenda.ts`, quitando las citas ya pagadas. Hay dos agendas: **Europa**, mañana y tarde (9:00-12:00 y 14:00-19:00, hora de Madrid), y **América**, las mañanas de cada persona (8:00-12:00 en su hora local; si no está en América, hora de Colombia). El calendario muestra la de la zona horaria de quien reserva y se puede cambiar con un selector. La pausa de 12:00 a 14:00 (hora de Madrid) se respeta en las dos agendas. Una cita en una agenda bloquea ese momento en la otra.
 2. `/api/checkout` vuelve a comprobar que el hueco sigue libre y crea un pago de Stripe embebido (el hueco queda guardado 30 min).
 3. Las citas pagadas se guardan en los metadatos del pago en Stripe (fecha, hora, modalidad, datos de la clienta). Así no hace falta otra base de datos: todas tus reservas aparecen en el panel de Stripe.
 4. `/api/stripe/webhook` recibe la confirmación y, si configuras Resend, te envía un aviso a ti y la confirmación a la clienta.

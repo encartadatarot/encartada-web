@@ -22,7 +22,7 @@ export const regiones = {
     zonaHoraria: 'Europe/Madrid',
     /** Si es true, el horario se aplica en la hora local de quien reserva. */
     horaDeQuienReserva: false,
-    horario: lunesAViernes([['09:00', '19:00']]),
+    horario: lunesAViernes([['09:00', '12:00'], ['14:00', '19:00']]),
   },
   america: {
     nombre: 'América',
@@ -72,6 +72,12 @@ export const agenda = {
   antelacionMinHoras: 24,
   /** Hasta cuántos días en el futuro se muestra el calendario. */
   diasMaxAdelante: 45,
+
+  /**
+   * Pausa de todos los días, en hora de Madrid. Se aplica a las dos agendas: ninguna cita
+   * (tampoco de América) puede caer en esta franja.
+   */
+  pausaDiaria: [['12:00', '14:00']] as Rango[],
 
   /** Días completos sin citas (vacaciones, festivos), en hora de Madrid. Formato AAAA-MM-DD. */
   diasBloqueados: [] as string[],

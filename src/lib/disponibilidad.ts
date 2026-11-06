@@ -37,6 +37,13 @@ function ocupadoManual(): Intervalo[] {
   return [...citas, ...dias];
 }
 
+/** La pausa diaria (en hora de Madrid) alrededor de ese día, como intervalos absolutos. */
+function pausas(fecha: string): Intervalo[] {
+  return [sumarDias(fecha, -1), fecha, sumarDias(fecha, 1)].flatMap((f) =>
+    agenda.pausaDiaria.map(([desde, hasta]) => ({ inicio: +horaLocalAUtc(f, desde, tzBase), fin: +horaLocalAUtc(f, hasta, tzBase) })),
+  );
+}
+
 export type Hueco = { inicio: string; fin: string };
 
 /**
@@ -54,13 +61,16 @@ export async function huecosDisponibles(servicio: Servicio, fecha: string, regio
   const descanso = agenda.descansoMin * 60000;
   const minimo = Date.now() + (servicio.antelacionMinHoras ?? agenda.antelacionMinHoras) * 3600000;
   const ocupado = [...(await reservasPagadas(fecha)), ...ocupadoManual()];
+  const pausa = pausas(fecha); // sin descanso extra: una cita puede terminar a las 12:00 y empezar a las 14:00
 
   const huecos: Hueco[] = [];
   for (const [desde, hasta] of rangos) {
     const fin = +horaLocalAUtc(fecha, hasta, tz);
     for (let t = +horaLocalAUtc(fecha, desde, tz); t + duracion <= fin; t += agenda.intervaloMin * 60000) {
       if (t < minimo) continue;
-      const choca = ocupado.some((o) => t < o.fin + descanso && t + duracion + descanso > o.inicio);
+      const choca =
+        ocupado.some((o) => t < o.fin + descanso && t + duracion + descanso > o.inicio) ||
+        pausa.some((o) => t < o.fin && t + duracion > o.inicio);
       if (!choca) huecos.push({ inicio: new Date(t).toISOString(), fin: new Date(t + duracion).toISOString() });
     }
   }
