@@ -50,10 +50,28 @@ export async function POST(req: Request) {
     metadata = { ...metadata, tipo: 'servicio', slug: servicio.slug, modalidad, fecha, inicio: hueco.inicio, fin: hueco.fin, notas: texto(body.notas, 450) };
   } else if (body.tipo === 'curso') {
     const curso = getCurso(texto(body.slug));
-    const importe = curso?.precios[moneda];
-    if (!curso || importe == null) return error('Curso no disponible');
-    item = { nombre: curso.titulo, descripcion: curso.resumen, importe };
-    metadata = { ...metadata, tipo: 'curso', slug: curso.slug };
+    if (!curso || !Object.keys(curso.precios).length) return error('Curso no disponible');
+    // «¿A cuántas sesiones vienes?»: curso completo o una sesión (si el curso tiene precio por sesión).
+    const unaSesion = body.modo === 'sesion';
+    const indice = Number(body.sesion);
+    const sesion = unaSesion ? curso.sesiones?.[indice] : undefined;
+    if (unaSesion && (!curso.preciosSesion || !Number.isInteger(indice) || !sesion)) return error('Elige la sesión a la que vienes');
+    const importe = (unaSesion ? curso.preciosSesion! : curso.precios)[moneda];
+    if (importe == null) return error('Moneda no disponible para este curso');
+    const tituloSesion = sesion ? `Sesión ${indice + 1}: ${sesion.titulo.replace(/_/g, '')}` : '';
+    item = {
+      nombre: sesion ? `${curso.titulo} · ${tituloSesion}` : curso.titulo,
+      descripcion: sesion ? 'Una sesión' : curso.resumen,
+      importe,
+    };
+    metadata = {
+      ...metadata,
+      tipo: 'curso',
+      slug: curso.slug,
+      modo: sesion ? 'una sesión' : 'curso completo',
+      sesion: tituloSesion,
+      respuesta: texto(body.respuesta, 450),
+    };
   } else {
     return error('Tipo no válido');
   }

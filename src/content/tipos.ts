@@ -51,6 +51,10 @@ export interface Curso {
   resumen: string;
   descripcion: Texto;
   precios: Precios;
+  /** Precio de una sola sesión: si existe, la inscripción ofrece «Curso completo» o «Una sesión». */
+  preciosSesion?: Precios;
+  /** Pregunta abierta de la inscripción (copiada del formulario de Google). */
+  pregunta?: string;
   /** Sesiones con su texto e imagen (se muestran una a una en la ficha). */
   sesiones?: { titulo: string; texto: Texto; imagen?: string }[];
   /** Temario opcional, agrupado por partes. */

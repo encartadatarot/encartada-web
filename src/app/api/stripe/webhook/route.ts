@@ -30,13 +30,13 @@ export async function POST(req: Request) {
     const detalle =
       m.tipo === 'servicio'
         ? `<p><b>${titulo ?? m.slug}</b> · ${m.modalidad}<br>${cuando}</p>`
-        : `<p><b>${titulo ?? m.slug}</b></p>`;
+        : `<p><b>${titulo ?? m.slug}</b><br>${m.sesion || m.modo || ''}</p>`;
 
     // Aviso para ti
     await enviarEmail(
       process.env.EMAIL_AVISOS ?? sitio.email,
       m.tipo === 'servicio' ? `Nueva reserva: ${raw.nombre}` : `Nueva compra: ${raw.nombre}`,
-      `${detalle}<p>${m.nombre} · ${m.email} · ${m.telefono || 'sin teléfono'}</p><p>${m.notas ?? ''}</p>`,
+      `${detalle}<p>${m.nombre} · ${m.email} · ${m.telefono || 'sin teléfono'}</p><p>${m.notas ?? ''}${m.respuesta ? `¿Qué quisieras aprender? ${m.respuesta}` : ''}</p>`,
     );
     // Confirmación para la clienta (formato de correo de identidad/voz-y-estilo.md)
     const siguiente =

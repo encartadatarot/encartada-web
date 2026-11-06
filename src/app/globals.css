@@ -258,3 +258,8 @@ a.tarjeta:hover { border-color: var(--acento); transform: translateY(-2px); }
   .sesion:nth-child(even) img { order: 0; }
   .sesion img { max-width: 200px; margin: 0 auto; }
 }
+
+fieldset.campo { border: 0; padding: 0; margin: 0; }
+fieldset.campo legend { font-size: 1rem; color: var(--texto-suave); margin-bottom: 6px; padding: 0; }
+.opciones-columna { flex-direction: column; align-items: stretch; }
+.opciones-columna .opcion { text-align: left; }
