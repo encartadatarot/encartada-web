@@ -24,7 +24,7 @@ export default async function ReservarServicio({ params }: Props) {
   return (
     <div className={`contenedor reserva ${className}`} style={style}>
       <aside className="reserva-resumen">
-        {s.imagen && <Image {...imagen(s.imagen)} alt="" sizes="220px" />}
+        {s.imagen && <div className="flota"><Image {...imagen(s.imagen)} alt="" sizes="220px" /></div>}
         <TituloLectura servicio={s} como="h1" />
         <Texto parrafos={s.descripcion} className="lectura-desc" />
         <p className="lectura-meta">

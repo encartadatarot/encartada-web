@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Cormorant_Garamond, Italiana, UnifrakturMaguntia } from 'next/font/google';
+import { ObservadorApariciones } from '@/components/Apariciones';
 import { Cabecera } from '@/components/Cabecera';
 import { Pie } from '@/components/Pie';
 import { sitio } from '@/config/sitio';
@@ -19,8 +20,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es" className={`${serif.variable} ${gotica.variable} ${solar.variable}`}>
+    <html lang="es" className={`${serif.variable} ${gotica.variable} ${solar.variable}`} suppressHydrationWarning>
+      <head>
+        {/* Marca que hay JavaScript: solo entonces se ocultan imágenes y letras hasta su aparición. */}
+        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
+      </head>
       <body>
+        <ObservadorApariciones />
         <Cabecera />
         <main>{children}</main>
         <Pie />

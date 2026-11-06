@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { Letras } from '@/components/Apariciones';
 import { BloqueLectura } from '@/components/BloqueLectura';
 import { CabeceraOraculo } from '@/components/CabeceraOraculo';
 import { Texto } from '@/components/Texto';
@@ -31,7 +32,7 @@ export default async function PaginaCategoria({ params }: Props) {
         <CabeceraOraculo oraculo={categoria.oraculo} intro={categoria.intro!} />
       ) : (
         <>
-          <h1 className={`titulo-pagina ${o.fuente}`} style={{ color: o.color }}>{categoria.rotulo ?? categoria.titulo}</h1>
+          <Letras as="h1" className={`titulo-pagina ${o.fuente}`} style={{ color: o.color }}>{categoria.rotulo ?? categoria.titulo}</Letras>
           {categoria.intro && <Texto parrafos={categoria.intro} className="intro" />}
         </>
       )}

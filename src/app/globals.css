@@ -210,12 +210,11 @@ a.tarjeta:hover { border-color: var(--acento); transform: translateY(-2px); }
 /* Columnas de cartas (oráculos, tiradas de tarot) */
 .columnas-cartas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; align-items: start; padding: 48px 0; }
 .carta-enlace { text-decoration: none; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; }
-.carta-enlace img { max-width: 260px; width: 100%; transition: transform .25s; }
-.carta-enlace:hover img { transform: translateY(-4px) rotate(-1deg); }
+.carta-enlace > img { max-width: 260px; width: 100%; }
 .carta-enlace h2 { font-size: 1.8rem; font-weight: 500; margin: 0; }
 .hub h1, .hub h3 { font-size: clamp(3rem, 6vw, 4.6rem); margin: 0; line-height: 1; }
 .hub p { margin: 0 0 8px; font-size: 1.35rem; }
-@media (max-width: 760px) { .columnas-cartas { grid-template-columns: 1fr; gap: 48px; } .carta-enlace img { max-width: 240px; } }
+@media (max-width: 760px) { .columnas-cartas { grid-template-columns: 1fr; gap: 48px; } .carta-enlace > img, .carta-collage { max-width: 240px; } }
 
 /* Portada */
 .mosaico img { width: 100%; height: auto; }
@@ -226,7 +225,7 @@ a.tarjeta:hover { border-color: var(--acento); transform: translateY(-2px); }
 .quien-soy-imagen { width: 100%; }
 .portada-columnas { display: grid; grid-template-columns: 1fr 1fr 1.6fr; gap: 32px; align-items: start; padding: 48px 0 0; }
 .portada-columnas h2 { font-size: clamp(2.2rem, 4vw, 3rem); line-height: 1; }
-.portada-columnas .carta-enlace img { max-width: 200px; }
+.portada-columnas .carta-enlace > img { max-width: 200px; }
 .portada-lema { position: relative; justify-self: center; max-width: 420px; }
 .portada-lema p { position: absolute; left: 10%; right: 10%; bottom: 8%; background: #000; padding: 10px 16px; margin: 0; font-size: 1.3rem; text-align: center; }
 @media (max-width: 860px) {
@@ -281,3 +280,46 @@ fieldset.campo legend { font-size: 1rem; color: var(--texto-suave); margin-botto
   65% { transform: translate(calc(var(--dx) * -0.6), var(--dy)) rotate(calc(var(--contragiro) * -1)); }
 }
 @media (prefers-reduced-motion: reduce) { .collage-capa { animation: none; } }
+
+/* ─── Apariciones (como en Canva) ─── */
+/* Títulos letra a letra: cada letra se funde desde borrosa, en desorden. */
+.letras .palabra { white-space: nowrap; }
+.letras .letra { display: inline-block; }
+.js .letras .letra { opacity: 0; filter: blur(0.28em); }
+.js .letras.visto .letra { animation: letra 1.5s ease-out var(--d) both; }
+@keyframes letra { from { opacity: 0; filter: blur(0.28em); } to { opacity: 1; filter: blur(0); } }
+/* Imágenes: se funden al entrar en pantalla. */
+.js main img { opacity: 0; transition: opacity 0.6s ease 0.1s; }
+.js main img.visto { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .js .letras .letra, .js .letras.visto .letra { opacity: 1; filter: none; animation: none; }
+  .js main img { opacity: 1; transition: none; }
+}
+
+/* ─── Movimiento al pasar el ratón (imágenes que en Canva estaban quietas) ─── */
+.collage.al-pasar .collage-capa { animation-play-state: paused; }
+.collage.al-pasar:hover .collage-capa,
+a:hover .collage.al-pasar .collage-capa,
+a:focus-visible .collage.al-pasar .collage-capa { animation-play-state: running; }
+.flota img { animation: flotar 4.8s ease-in-out infinite; animation-play-state: paused; }
+.flota:hover img, a.flota:focus-visible img { animation-play-state: running; }
+@keyframes flotar {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  30% { transform: translate(0.8%, -1%) rotate(1.4deg); }
+  65% { transform: translate(-0.6%, 0.8%) rotate(-0.9deg); }
+}
+.mosaico { overflow: hidden; }
+.mosaico.flota img { animation-name: flotar-mosaico; animation-duration: 7s; }
+@keyframes flotar-mosaico {
+  0%, 100% { transform: scale(1.0); }
+  35% { transform: scale(1.025) translate(0.4%, -0.3%) rotate(0.3deg); }
+  70% { transform: scale(1.02) translate(-0.4%, 0.3%) rotate(-0.25deg); }
+}
+@media (prefers-reduced-motion: reduce) { .flota img, .mosaico.flota img, .collage.al-pasar .collage-capa { animation: none; } }
+.carta-collage { width: 100%; max-width: 260px; }
+.portada-columnas .carta-enlace .carta-collage { max-width: 200px; }
+.quien-soy-imagen { display: block; }
+.quien-soy-imagen img { width: 100%; }
+.curso-portada-marco { max-width: 480px; margin: 0 auto 28px; }
+.curso-portada-marco .curso-portada { margin: 0; }
+.reserva-resumen .flota img { max-width: 220px; margin: 0 auto 16px; }

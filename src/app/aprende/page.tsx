@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Letras } from '@/components/Apariciones';
 import { cursosPublicados } from '@/content/cursos';
 import { recursosPublicados } from '@/content/recursos';
 
@@ -18,7 +19,7 @@ export default function Aprende() {
         {secciones.map((s) => (
           <Link key={s.href} href={s.href} className={`tarjeta acento-${s.acento}`}>
             <h3 className="gotica">{s.titulo}</h3>
-            {s.lista.length ? s.lista.map((x) => <p key={x.slug}>{x.titulo}</p>) : <p>Muy pronto.</p>}
+            {s.lista.length ? s.lista.map((x) => <Letras as="p" key={x.slug}>{x.titulo}</Letras>) : <p>Muy pronto.</p>}
           </Link>
         ))}
       </div>

@@ -25,15 +25,15 @@ export const tamanos: Record<string, [number, number]> = {
   '/img/lecturas/la-tertulia.webp': [824, 1355],
   '/img/lecturas/sesion-de-improvisacion.webp': [754, 1288],
   '/img/lecturas/tu-cancion-natal.webp': [783, 1299],
-  '/img/oraculos/hub-lunar.webp': [503, 838],
-  '/img/oraculos/hub-solar.webp': [503, 849],
-  '/img/oraculos/hub-terrestre.webp': [518, 856],
+  '/img/oraculos/hub-lunar.webp': [498, 831],
+  '/img/oraculos/hub-solar.webp': [496, 843],
+  '/img/oraculos/hub-terrestre.webp': [516, 856],
   '/img/oraculos/oraculo-lunar.webp': [818, 1530],
   '/img/oraculos/oraculo-solar.webp': [814, 1536],
-  '/img/oraculos/oraculo-terrestre.webp': [808, 1518],
-  '/img/oraculos/tarot-de-temporada.webp': [590, 920],
-  '/img/oraculos/tarot-grupal.webp': [587, 920],
-  '/img/oraculos/tarot-individual.webp': [584, 883],
+  '/img/oraculos/oraculo-terrestre.webp': [785, 1505],
+  '/img/oraculos/tarot-de-temporada.webp': [582, 912],
+  '/img/oraculos/tarot-grupal.webp': [586, 920],
+  '/img/oraculos/tarot-individual.webp': [583, 922],
 };
 
 export function imagen(src: string) {

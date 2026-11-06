@@ -8,7 +8,7 @@ import { imagen } from '@/content/imagenes';
 export default function Inicio() {
   return (
     <>
-      <section className="mosaico">
+      <section className="mosaico flota">
         <Image {...imagen('/img/inicio/mosaico.webp')} alt={`${sitio.nombre}: emblema del corazón con espadas y llama entre cartas de tarot`} priority sizes="100vw" />
       </section>
 
@@ -29,19 +29,19 @@ export default function Inicio() {
           Mi oficio es enseñarte cómo leerte <em>simbólicamente</em>, <em>para que veas</em> y <em>nombres</em> con hondura tu vida y, así,
           puedas crearla con <em>más lucidez</em>.
         </p>
-        <Image {...imagen('/img/inicio/xxi.webp')} alt="" className="quien-soy-imagen" sizes="200px" />
+        <span className="flota quien-soy-imagen"><Image {...imagen('/img/inicio/xxi.webp')} alt="" sizes="200px" /></span>
       </section>
 
       <section className="contenedor portada-columnas acento-rojo">
-        <Link href="/oraculos" className="carta-enlace">
+        <Link href="/oraculos" className="carta-enlace flota">
           <h2 className="gotica acento">ven al oráculo</h2>
           <Image {...imagen('/img/inicio/oraculo.webp')} alt="" sizes="200px" />
         </Link>
-        <Link href="/aprende" className="carta-enlace">
+        <Link href="/aprende" className="carta-enlace flota">
           <h2 className="gotica acento">aprende conmigo</h2>
           <Image {...imagen('/img/inicio/aprende.webp')} alt="" sizes="200px" />
         </Link>
-        <div className="portada-lema">
+        <div className="portada-lema flota">
           <Image {...imagen('/img/inicio/lema.webp')} alt="" sizes="(max-width: 760px) 90vw, 420px" />
           <p>{formatear(sitio.lema)}</p>
         </div>

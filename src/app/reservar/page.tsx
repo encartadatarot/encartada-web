@@ -24,7 +24,7 @@ export default function Reservar() {
               {lista.map((s) => {
                 const { className, style } = estiloLectura(s);
                 return (
-                  <Link key={s.slug} href={`/reservar/${s.slug}`} className={`tarjeta tarjeta-lectura ${className}`} style={style}>
+                  <Link key={s.slug} href={`/reservar/${s.slug}`} className={`tarjeta tarjeta-lectura flota ${className}`} style={style}>
                     {s.imagen && <Image {...imagen(s.imagen)} alt="" sizes="120px" />}
                     <div>
                       <TituloLectura servicio={s} como="h3" />

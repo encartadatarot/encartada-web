@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
+import { Letras } from '@/components/Apariciones';
 import { Compra } from '@/components/Compra';
 import { formatear, Texto } from '@/components/Texto';
 import { cursosPublicados, getCurso } from '@/content/cursos';
@@ -25,8 +26,8 @@ export default async function PaginaCurso({ params }: Props) {
   const conFicha = c.fechas || c.formato || c.requisitos || c.temario;
   return (
     <div className={`contenedor acento-${c.acento}`}>
-      <h1 className="titulo-pagina gotica">{c.titulo}</h1>
-      {c.imagen && <Image {...imagen(c.imagen)} alt={`Portada de ${c.titulo}`} sizes="(max-width: 760px) 90vw, 480px" priority className="curso-portada" />}
+      <Letras as="h1" className="titulo-pagina gotica">{c.titulo}</Letras>
+      {c.imagen && <div className="flota curso-portada-marco"><Image {...imagen(c.imagen)} alt={`Portada de ${c.titulo}`} sizes="(max-width: 760px) 90vw, 480px" priority className="curso-portada" /></div>}
       <div className="prosa">
         <p className="centro"><em>{c.resumen}</em></p>
         <Texto parrafos={c.descripcion} />

@@ -21,6 +21,8 @@ Web de **en_cartada** (tarot, sueños y astrología), migrada desde Canva a **Ne
 | Colores y tipografía | `src/app/globals.css` |
 | Imágenes | `public/img/…` (los collages animados, separados en tiras, en `public/img/collages/` y `src/content/collages.ts`) |
 
+Animaciones (copiadas de la web de Canva): los collages de las lecturas y de los oráculos lunar y solar flotan solos; las imágenes que en Canva estaban quietas se mueven al pasar el ratón; las imágenes se funden al aparecer y los títulos de oráculos, tiradas, cursos y grabaciones aparecen letra a letra (componente `Letras`). Nada se mueve si la persona tiene activado «reducir movimiento».
+
 Formato de los textos: `**negrita**`, `_cursiva_`, `==color de la lectura==`. Cada elemento de la lista es un párrafo.
 
 Para publicar una lectura o curso nuevo: copia un bloque, rellena los datos y pon `publicado: true`.

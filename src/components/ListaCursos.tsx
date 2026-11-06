@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { imagen } from '@/content/imagenes';
+import { Letras } from './Apariciones';
 import type { Curso } from '@/content/tipos';
 import { lineaPrecios } from '@/lib/precios';
 
@@ -11,10 +12,10 @@ export function ListaCursos({ cursos, vacio }: { cursos: Curso[]; vacio: string 
   return (
     <div className="rejilla">
       {cursos.map((c) => (
-        <Link key={c.slug} href={`/cursos/${c.slug}`} className={`tarjeta acento-${c.acento}`}>
+        <Link key={c.slug} href={`/cursos/${c.slug}`} className={`tarjeta flota acento-${c.acento}`}>
           {c.imagen && <Image {...imagen(c.imagen)} alt="" sizes="(max-width: 760px) 90vw, 340px" className="tarjeta-portada" />}
           <span className="etiqueta">{etiquetas[c.tipo]}</span>
-          <h3 className="gotica">{c.titulo}</h3>
+          <Letras as="h3" className="gotica">{c.titulo}</Letras>
           <p>{c.resumen}</p>
           <p className="acento">{lineaPrecios(c.precios)}</p>
         </Link>

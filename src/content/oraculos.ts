@@ -34,7 +34,7 @@ export const oraculos: Record<Oraculo, {
 
 /** Tarjetas de la página "oráculo terrestre", como en la web original. */
 export const tiradas = [
-  { href: '/tarot-individual', titulo: 'Tiradas individuales', imagen: '/img/oraculos/tarot-individual.webp' },
-  { href: '/tarot-grupal', titulo: 'Tiradas grupales', imagen: '/img/oraculos/tarot-grupal.webp' },
-  { href: '/tarot-de-temporada', titulo: 'Tiradas de temporada', imagen: '/img/oraculos/tarot-de-temporada.webp' },
+  { href: '/tarot-individual', titulo: 'Tiradas individuales', imagen: '/img/oraculos/tarot-individual.webp', collage: 'tiradas-individuales' },
+  { href: '/tarot-grupal', titulo: 'Tiradas grupales', imagen: '/img/oraculos/tarot-grupal.webp', collage: 'tiradas-grupales' },
+  { href: '/tarot-de-temporada', titulo: 'Tiradas de temporada', imagen: '/img/oraculos/tarot-de-temporada.webp', collage: 'tiradas-de-temporada' },
 ];
