@@ -1,5 +1,7 @@
 /** Tamaño real de cada imagen (para que se vean sin saltos al cargar). Se genera al añadir imágenes. */
 export const tamanos: Record<string, [number, number]> = {
+  '/img/cursos/la-brevisima-historia-del-tarot.webp': [940, 1192],
+  '/img/cursos/de-que-hablamos-cuando-hablamos-de-mistica.webp': [920, 1122],
   '/img/inicio/aprende.webp': [400, 1180],
   '/img/inicio/lema.webp': [844, 1434],
   '/img/inicio/mosaico.webp': [1800, 1009],

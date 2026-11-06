@@ -241,3 +241,4 @@ a.tarjeta:hover { border-color: var(--acento); transform: translateY(-2px); }
 .tarjeta-lectura { flex-direction: row; align-items: center; gap: 18px; }
 .tarjeta-lectura img { width: 90px; flex-shrink: 0; }
 .tarjeta-lectura .titulo-lectura { font-size: 1.9rem; margin: 0 0 4px; }
+.tarjeta-portada { width: 100%; border-radius: 10px; margin-bottom: 6px; }

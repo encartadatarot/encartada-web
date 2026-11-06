@@ -78,9 +78,8 @@ Cuando cambie algo en `oferta/`, hay que llevarlo a `src/content/`.
 
 - [ ] **El tropo**: número de cartas (9 en la web, 8 en el PDF 2023). Ahora se muestra solo la duración.
 - [ ] **Astrología**: precios en COP (la web pone "400.00"). Ahora solo se muestran EUR y USD.
-- [ ] **Los puntos cardinales del tarot**: precio (1.800.000 COP en Canva frente a 300.000 COP en la web). Ahora se muestra sin precio ni botón de compra.
+- [ ] **Los puntos cardinales del tarot**: oculto porque las inscripciones están cerradas. Para la próxima edición falta confirmar el precio (1.800.000 COP en Canva frente a 300.000 COP en la web).
 - [ ] **El revés de Saturno**: fecha de la tercera sesión (17 o 24 de enero).
-- [ ] **¿De qué hablamos cuando hablamos de mística?**: si se vende la grabación.
 - [ ] Ciclo de iniciación, Hacia el otro lado, Tarot para tarotistas: faltan datos o están en curso.
 - [ ] Grafía de la marca (en_cartada / en cartada) y logo original.
 - [ ] Horario real en `src/config/agenda.ts`.

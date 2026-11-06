@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { Compra } from '@/components/Compra';
 import { Texto } from '@/components/Texto';
 import { cursosPublicados, getCurso } from '@/content/cursos';
+import { imagen } from '@/content/imagenes';
 import { lineaPrecios } from '@/lib/precios';
 
 type Props = { params: Promise<{ slug: string }> };
@@ -25,7 +26,7 @@ export default async function PaginaCurso({ params }: Props) {
   return (
     <div className={`contenedor acento-${c.acento}`}>
       <h1 className="titulo-pagina gotica">{c.titulo}</h1>
-      {c.imagen && <Image src={c.imagen} alt="" width={800} height={800} style={{ maxWidth: 360, margin: '0 auto 24px' }} />}
+      {c.imagen && <Image {...imagen(c.imagen)} alt={`Portada de ${c.titulo}`} sizes="360px" priority style={{ maxWidth: 360, width: '100%', margin: '0 auto 24px' }} />}
       <div className="prosa">
         <p className="centro"><em>{c.resumen}</em></p>
         <Texto parrafos={c.descripcion} />
