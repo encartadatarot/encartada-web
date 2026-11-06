@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import type Stripe from 'stripe';
-import { agenda, esRegion, regiones } from '@/config/agenda';
+import { agenda, esRegion, nombreZona, zonaDeAgenda } from '@/config/agenda';
 import { sitio } from '@/config/sitio';
 import { getCurso } from '@/content/cursos';
 import { getServicio } from '@/content/servicios';
@@ -38,13 +38,14 @@ export async function POST(req: Request) {
 
     const region = body.region ?? 'europa';
     if (!esRegion(region)) return error('Agenda no válida');
-    const { zonaHoraria: tzRegion, etiqueta } = regiones[region];
+    const tzRegion = zonaDeAgenda(region, texto(body.zona, 64));
+    const etiqueta = nombreZona(tzRegion);
 
     // Volvemos a comprobar en el servidor que el hueco sigue libre en esa agenda.
     const inicio = texto(body.inicio, 40);
     const valido = inicio && !Number.isNaN(Date.parse(inicio));
     const fechaRegion = valido ? fechaEnZona(new Date(inicio), tzRegion) : '';
-    const hueco = valido ? (await huecosDisponibles(servicio, fechaRegion, region)).find((h) => h.inicio === inicio) : undefined;
+    const hueco = valido ? (await huecosDisponibles(servicio, fechaRegion, region, tzRegion)).find((h) => h.inicio === inicio) : undefined;
     if (!hueco) return error('Ese horario ya no está disponible, elige otro por favor.', 409);
     // En los metadatos la fecha va siempre en hora de Madrid: así se buscan las citas ocupadas.
     const fecha = fechaEnZona(new Date(hueco.inicio), agenda.zonaHoraria);
@@ -54,7 +55,7 @@ export async function POST(req: Request) {
       descripcion: `${formatearFechaLarga(hueco.inicio, tzRegion)} (${etiqueta}) · ${servicio.duracionMin} min`,
       importe,
     };
-    metadata = { ...metadata, tipo: 'servicio', slug: servicio.slug, modalidad, region, fecha, inicio: hueco.inicio, fin: hueco.fin, notas: texto(body.notas, 450) };
+    metadata = { ...metadata, tipo: 'servicio', slug: servicio.slug, modalidad, region, zona: tzRegion, fecha, inicio: hueco.inicio, fin: hueco.fin, notas: texto(body.notas, 450) };
   } else if (body.tipo === 'curso') {
     const curso = getCurso(texto(body.slug));
     if (!curso || !Object.keys(curso.precios).length) return error('Curso no disponible');

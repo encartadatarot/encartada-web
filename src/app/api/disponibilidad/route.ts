@@ -11,9 +11,10 @@ export async function GET(req: Request) {
   const servicio = getServicio(searchParams.get('servicio') ?? '');
   const fecha = searchParams.get('fecha');
   const region = searchParams.get('region') ?? 'europa';
+  const zona = searchParams.get('zona');
   if (!servicio || !esFecha(fecha) || !esRegion(region)) return NextResponse.json({ error: 'Parámetros no válidos' }, { status: 400 });
   try {
-    return NextResponse.json({ huecos: await huecosDisponibles(servicio, fecha, region) });
+    return NextResponse.json({ huecos: await huecosDisponibles(servicio, fecha, region, zona) });
   } catch (e) {
     console.error(e);
     return NextResponse.json({ error: 'No se pudo consultar la agenda' }, { status: 500 });

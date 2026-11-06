@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { esRegion, regiones } from '@/config/agenda';
+import { esRegion, nombreZona, zonaDeAgenda } from '@/config/agenda';
 import { stripe } from '@/lib/stripe';
 import { formatearFechaLarga } from '@/lib/tiempo';
 
@@ -13,7 +13,7 @@ export default async function Gracias({ searchParams }: Props) {
   const sesion = stripe && id ? await stripe.checkout.sessions.retrieve(id).catch(() => null) : null;
   const pagado = sesion?.payment_status === 'paid';
   const m = sesion?.metadata ?? {};
-  const r = regiones[esRegion(m.region) ? m.region : 'europa'];
+  const tzCita = zonaDeAgenda(esRegion(m.region) ? m.region : 'europa', m.zona);
 
   return (
     <div className="contenedor centro acento-dorado">
@@ -23,7 +23,7 @@ export default async function Gracias({ searchParams }: Props) {
           m.tipo === 'servicio' ? (
             <>
               <p>Tu cita está confirmada para el</p>
-              <p className="acento"><strong>{formatearFechaLarga(m.inicio, r.zonaHoraria)}</strong> ({r.etiqueta})</p>
+              <p className="acento"><strong>{formatearFechaLarga(m.inicio, tzCita)}</strong> ({nombreZona(tzCita)})</p>
               <p><em>{m.modalidad === 'virtual' ? 'Te enviaré el enlace de la videollamada antes de la sesión.' : 'Te escribiré con la dirección en Madrid.'}</em></p>
             </>
           ) : (

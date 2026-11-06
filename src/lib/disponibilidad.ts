@@ -1,5 +1,5 @@
 import 'server-only';
-import { agenda, type Region, regiones } from '@/config/agenda';
+import { agenda, type Region, regiones, zonaDeAgenda } from '@/config/agenda';
 import type { Servicio } from '@/content/tipos';
 import { stripe } from './stripe';
 import { diaSemana, esFecha, fechaEnZona, horaLocalAUtc, sumarDias } from './tiempo';
@@ -8,15 +8,15 @@ const tzBase = agenda.zonaHoraria;
 type Intervalo = { inicio: number; fin: number };
 
 /** ¿Se puede reservar ese día (en la hora local de la región)? */
-export function fechaPermitida(fecha: string, region: Region) {
-  const hoy = fechaEnZona(new Date(), regiones[region].zonaHoraria);
+export function fechaPermitida(fecha: string, tz: string) {
+  const hoy = fechaEnZona(new Date(), tz);
   return fecha >= hoy && fecha <= sumarDias(hoy, agenda.diasMaxAdelante);
 }
 
 /**
  * Citas ya pagadas alrededor de ese día. Usamos el propio Stripe como "base de datos" de reservas
  * (cada pago guarda en sus metadatos la fecha en hora de Madrid, el inicio y el fin).
- * Se miran también el día anterior y el siguiente porque Madrid y Colombia no comparten fecha a toda hora.
+ * Se miran también el día anterior y el siguiente porque Madrid y América no comparten fecha a toda hora.
  */
 async function reservasPagadas(fecha: string): Promise<Intervalo[]> {
   if (!stripe) return [];
@@ -39,10 +39,14 @@ function ocupadoManual(): Intervalo[] {
 
 export type Hueco = { inicio: string; fin: string };
 
-/** Huecos libres de un día, según el horario de la región (Europa o Colombia). */
-export async function huecosDisponibles(servicio: Servicio, fecha: string, region: Region): Promise<Hueco[]> {
-  if (!esFecha(fecha) || !fechaPermitida(fecha, region)) return [];
-  const { zonaHoraria: tz, horario } = regiones[region];
+/**
+ * Huecos libres de un día, según el horario de la agenda (Europa, o América en la hora de quien reserva).
+ * `fecha` está en la zona de la agenda.
+ */
+export async function huecosDisponibles(servicio: Servicio, fecha: string, region: Region, zonaVisitante?: string | null): Promise<Hueco[]> {
+  const tz = zonaDeAgenda(region, zonaVisitante);
+  if (!esFecha(fecha) || !fechaPermitida(fecha, tz)) return [];
+  const { horario } = regiones[region];
   const rangos = horario[diaSemana(fecha)] ?? [];
   if (!rangos.length) return [];
 

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { agenda, esRegion, regiones } from '@/config/agenda';
+import { agenda, esRegion, nombreZona, zonaDeAgenda } from '@/config/agenda';
 import { sitio } from '@/config/sitio';
 import { getCurso } from '@/content/cursos';
 import { getServicio } from '@/content/servicios';
@@ -26,10 +26,10 @@ export async function POST(req: Request) {
     const raw = s.metadata ?? {};
     const m = Object.fromEntries(Object.entries(raw).map(([k, v]) => [k, esc(v)])) as Record<string, string>;
     const titulo = m.tipo === 'servicio' ? getServicio(raw.slug)?.nombre : getCurso(raw.slug)?.titulo;
-    // Hora en la agenda que eligió la clienta (Europa o Colombia); para ti, también en hora de Madrid.
-    const r = regiones[esRegion(raw.region) ? raw.region : 'europa'];
-    const cuando = raw.inicio ? `${formatearFechaLarga(raw.inicio, r.zonaHoraria)} (${r.etiqueta})` : '';
-    const cuandoMadrid = raw.inicio && r.zonaHoraria !== agenda.zonaHoraria ? `<br>${formatearFechaLarga(raw.inicio, agenda.zonaHoraria)} (hora de Madrid)` : '';
+    // Hora en la agenda que eligió la clienta (Europa o América, en su hora); para ti, también en hora de Madrid.
+    const tzCita = zonaDeAgenda(esRegion(raw.region) ? raw.region : 'europa', raw.zona);
+    const cuando = raw.inicio ? `${formatearFechaLarga(raw.inicio, tzCita)} (${nombreZona(tzCita)})` : '';
+    const cuandoMadrid = raw.inicio && tzCita !== agenda.zonaHoraria ? `<br>${formatearFechaLarga(raw.inicio, agenda.zonaHoraria)} (hora de Madrid)` : '';
     const detalle =
       m.tipo === 'servicio'
         ? `<p><b>${titulo ?? m.slug}</b> · ${m.modalidad}<br>${cuando}</p>`
