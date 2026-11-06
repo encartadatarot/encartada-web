@@ -3,7 +3,9 @@ import { agenda, esRegion, nombreZona, zonaDeAgenda } from '@/config/agenda';
 import { sitio } from '@/config/sitio';
 import { getCurso } from '@/content/cursos';
 import { getServicio } from '@/content/servicios';
+import { olvidarOcupacion } from '@/lib/disponibilidad';
 import { enviarEmail, esc } from '@/lib/email';
+import { crearEventoCita } from '@/lib/google-calendar';
 import { stripe } from '@/lib/stripe';
 import { formatearFechaLarga } from '@/lib/tiempo';
 
@@ -34,6 +36,30 @@ export async function POST(req: Request) {
       m.tipo === 'servicio'
         ? `<p><b>${titulo ?? m.slug}</b> · ${m.modalidad}<br>${cuando}</p>`
         : `<p><b>${titulo ?? m.slug}</b><br>${m.sesion || m.modo || ''}</p>`;
+
+    // Apunta la cita en tu Google Calendar (si está conectado). Si falla, no bloquea los correos.
+    if (raw.tipo === 'servicio' && raw.inicio && raw.fin) {
+      olvidarOcupacion();
+      try {
+        await crearEventoCita({
+          referencia: s.id,
+          titulo: `${titulo ?? raw.slug} · ${raw.nombre}`,
+          inicio: raw.inicio,
+          fin: raw.fin,
+          ubicacion: raw.modalidad === 'presencial' ? 'Presencial (Madrid)' : 'Virtual (videollamada)',
+          descripcion: [
+            `Reserva pagada en la web (${raw.modalidad}).`,
+            raw.inicio && tzCita !== agenda.zonaHoraria ? `Hora de la clienta: ${formatearFechaLarga(raw.inicio, tzCita)} (${nombreZona(tzCita)})` : '',
+            `Nombre: ${raw.nombre}`,
+            `Email: ${raw.email}`,
+            raw.telefono ? `Teléfono: ${raw.telefono}` : '',
+            raw.notas ? `Notas: ${raw.notas}` : '',
+          ].filter(Boolean).join('\n'),
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    }
 
     // Aviso para ti
     await enviarEmail(

@@ -44,7 +44,24 @@ Las URLs antiguas de Canva (`/orculos`, `/page-6`, …) redirigen a las nuevas (
 3. Las citas pagadas se guardan en los metadatos del pago en Stripe (fecha, hora, modalidad, datos de la clienta). Así no hace falta otra base de datos: todas tus reservas aparecen en el panel de Stripe.
 4. `/api/stripe/webhook` recibe la confirmación y, si configuras Resend, te envía un aviso a ti y la confirmación a la clienta.
 
-Las citas que no vengan de la web se pueden bloquear en `agenda.ocupadoManual`.
+Las citas que no vengan de la web se bloquean solas si están en tu Google Calendar (o a mano en `agenda.ocupadoManual`).
+
+## Conectar Google Calendar
+
+La web lee tu Google Calendar (cualquier evento bloquea ese horario y cuenta para el máximo de 4 horas al día; los marcados como «Disponible» no) y apunta en él cada cita pagada.
+
+Se conecta con una **cuenta de servicio**: una cuenta técnica de Google con la que compartes tu calendario. Se crea una vez:
+
+1. Entra en [console.cloud.google.com](https://console.cloud.google.com) con encartada.tarot@gmail.com y crea un proyecto (por ejemplo «encartada-web»).
+2. En *APIs y servicios → Biblioteca*, busca **Google Calendar API** y pulsa **Habilitar**.
+3. En *IAM y administración → Cuentas de servicio*, pulsa **Crear cuenta de servicio**. Ponle un nombre (por ejemplo «reservas-web») y pulsa **Listo**; no hace falta darle roles.
+4. Abre la cuenta creada → pestaña **Claves** → *Agregar clave → Crear clave nueva → JSON*. Se descarga un archivo `.json`. Guárdalo bien: es una contraseña.
+5. Copia el email de la cuenta de servicio (termina en `.iam.gserviceaccount.com`).
+6. En Google Calendar → *Configuración* → tu calendario **encartada.tarot@gmail.com** → *Compartir con determinadas personas* → añade ese email con el permiso **«Hacer cambios en eventos»**.
+7. En Vercel → proyecto *encartada-web* → *Settings → Environment Variables*, crea `GOOGLE_SERVICE_ACCOUNT_JSON` y pega como valor **todo el contenido** del archivo `.json`. (`GOOGLE_CALENDAR_ID` ya está puesto.)
+8. Vuelve a publicar y abre `https://TU-DOMINIO/api/calendario`: debe decir `"lectura":"ok"`.
+
+Si Google falla, la web sigue funcionando con las citas de Stripe y el error queda en el registro de Vercel. Para que los eventos de tu calendario no cuenten en el máximo diario (solo bloqueen su horario), pon `eventosDeGoogleCuentanEnMaximo: false` en `src/config/agenda.ts`.
 
 ## Desarrollo local
 
@@ -84,4 +101,5 @@ Cuando cambie algo en `oferta/`, hay que llevarlo a `src/content/`.
 - [ ] Grafía de la marca (en_cartada / en cartada) y logo original.
 - [ ] Confirmar los días de atención (ahora, de lunes a viernes en las dos agendas) en `src/config/agenda.ts`.
 - [ ] Imágenes para las lecturas que aún no tienen collage (sueños, grupales, temporada, astrología).
-- [ ] Más adelante: sincronizar con Google Calendar, área privada con acceso a los cursos y grabaciones.
+- [ ] Crear la cuenta de servicio de Google y poner `GOOGLE_SERVICE_ACCOUNT_JSON` en Vercel (ver «Conectar Google Calendar»).
+- [ ] Más adelante: área privada con acceso a los cursos y grabaciones.

@@ -1,12 +1,14 @@
 import 'server-only';
 import { agenda, type Region, regiones, zonaDeAgenda } from '@/config/agenda';
 import type { Servicio } from '@/content/tipos';
+import { eventosOcupados } from './google-calendar';
 import { stripe } from './stripe';
 import { diaSemana, esFecha, fechaEnZona, horaLocalAUtc, sumarDias } from './tiempo';
 
 const tzBase = agenda.zonaHoraria;
 const MIN = 60000;
-type Intervalo = { inicio: number; fin: number };
+/** `cuenta`: si suma para el máximo de horas de citas del día. */
+type Intervalo = { inicio: number; fin: number; cuenta?: boolean };
 
 /** ¿Se puede reservar ese día (en la hora local de la agenda)? */
 export function fechaPermitida(fecha: string, tz: string) {
@@ -15,16 +17,41 @@ export function fechaPermitida(fecha: string, tz: string) {
 }
 
 /**
- * Citas pagadas de las próximas semanas. Usamos el propio Stripe como "base de datos" de reservas:
- * cada pago guarda en sus metadatos el inicio y el fin de la cita. Como solo se puede reservar con
- * `diasMaxAdelante` días de antelación, basta con mirar los pagos creados en ese periodo.
- * Se guarda en memoria 30 s para no consultar Stripe en cada día del calendario.
+ * Todo lo ocupado en las próximas semanas, de dos fuentes:
+ * - Citas pagadas en la web: Stripe hace de "base de datos" (cada pago guarda inicio y fin).
+ *   Como solo se puede reservar con `diasMaxAdelante` días de antelación, basta con mirar los pagos de ese periodo.
+ * - Tu Google Calendar: cualquier evento bloquea su horario (los creados por la web no se cuentan dos veces).
+ * Se guarda en memoria 30 s para no consultar en cada día del calendario.
  */
 let cache: { hasta: number; citas: Intervalo[] } | null = null;
 
+/** Para que una cita recién pagada desaparezca enseguida del calendario. */
+export function olvidarOcupacion() { cache = null; }
+
 async function citasPagadas(fresco = false): Promise<Intervalo[]> {
-  if (!stripe) return [];
   if (!fresco && cache && cache.hasta > Date.now()) return cache.citas;
+  const [web, calendario] = await Promise.all([citasDeStripe(), citasDeGoogle()]);
+  const citas = [...web, ...calendario];
+  cache = { hasta: Date.now() + 30_000, citas };
+  return citas;
+}
+
+async function citasDeGoogle(): Promise<Intervalo[]> {
+  try {
+    const ahora = new Date();
+    const hasta = new Date(ahora.getTime() + (agenda.diasMaxAdelante + 2) * 86400000);
+    return (await eventosOcupados(new Date(ahora.getTime() - 86400000), hasta))
+      .filter((e) => !e.deLaWeb)
+      .map((e) => ({ inicio: e.inicio, fin: e.fin, cuenta: agenda.eventosDeGoogleCuentanEnMaximo }));
+  } catch (e) {
+    // Si Google falla, la web sigue funcionando con las citas de Stripe; queda en el registro de Vercel.
+    console.error('Google Calendar:', e);
+    return [];
+  }
+}
+
+async function citasDeStripe(): Promise<Intervalo[]> {
+  if (!stripe) return [];
   const desde = Math.floor(Date.now() / 1000) - (agenda.diasMaxAdelante + 2) * 86400;
   const citas: Intervalo[] = [];
   let page: string | undefined;
@@ -40,7 +67,6 @@ async function citasPagadas(fresco = false): Promise<Intervalo[]> {
     }
     page = res.has_more ? (res.next_page ?? undefined) : undefined;
   } while (page);
-  cache = { hasta: Date.now() + 30_000, citas };
   return citas;
 }
 
@@ -62,7 +88,9 @@ function pausas(fecha: string): Intervalo[] {
 function minutosDelDia(fechaMadrid: string, citas: Intervalo[]) {
   const ini = +horaLocalAUtc(fechaMadrid, '00:00', tzBase);
   const fin = +horaLocalAUtc(sumarDias(fechaMadrid, 1), '00:00', tzBase);
-  return citas.reduce((total, c) => total + Math.max(0, Math.min(c.fin, fin) - Math.max(c.inicio, ini)) / MIN, 0);
+  return citas
+    .filter((c) => c.cuenta !== false)
+    .reduce((total, c) => total + Math.max(0, Math.min(c.fin, fin) - Math.max(c.inicio, ini)) / MIN, 0);
 }
 
 export type Hueco = { inicio: string; fin: string };

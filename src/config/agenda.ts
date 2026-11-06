@@ -68,6 +68,11 @@ export const agenda = {
   intervaloMin: 60,
   /** Máximo de minutos de citas por día (en hora de Madrid, sumando las dos agendas). 240 = 4 horas. */
   maxMinutosPorDia: 240,
+  /**
+   * Si es true, los eventos de tu Google Calendar (no solo las citas de la web) cuentan para ese
+   * máximo diario. Siempre bloquean su horario, cuenten o no.
+   */
+  eventosDeGoogleCuentanEnMaximo: true,
   /** Descanso mínimo entre una cita y la siguiente. */
   descansoMin: 15,
   /** Con cuánta antelación mínima se puede reservar. */
