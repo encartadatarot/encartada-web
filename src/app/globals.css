@@ -242,3 +242,19 @@ a.tarjeta:hover { border-color: var(--acento); transform: translateY(-2px); }
 .tarjeta-lectura img { width: 90px; flex-shrink: 0; }
 .tarjeta-lectura .titulo-lectura { font-size: 1.9rem; margin: 0 0 4px; }
 .tarjeta-portada { width: 100%; border-radius: 10px; margin-bottom: 6px; }
+
+/* Ficha de curso: portada y sesiones */
+.curso-portada { max-width: 480px; width: 100%; margin: 0 auto 28px; border-radius: 6px; }
+.sesiones { max-width: 860px; margin: 24px auto 8px; display: grid; gap: 48px; }
+.sesion { display: grid; grid-template-columns: 240px 1fr; gap: 36px; align-items: start; }
+.sesion:nth-child(even) { grid-template-columns: 1fr 240px; }
+.sesion:nth-child(even) img { order: 2; }
+.sesion img { width: 100%; border-radius: 4px; }
+.sesion h2 { font-size: 2.6rem; margin: 0; }
+.sesion h3 { font-size: 1.6rem; font-weight: 600; margin: 4px 0 14px; }
+.sesion p { font-size: 1.3rem; line-height: 1.3; margin: 0 0 .8em; }
+@media (max-width: 760px) {
+  .sesion, .sesion:nth-child(even) { grid-template-columns: 1fr; text-align: center; gap: 16px; }
+  .sesion:nth-child(even) img { order: 0; }
+  .sesion img { max-width: 200px; margin: 0 auto; }
+}

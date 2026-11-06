@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { Compra } from '@/components/Compra';
-import { Texto } from '@/components/Texto';
+import { formatear, Texto } from '@/components/Texto';
 import { cursosPublicados, getCurso } from '@/content/cursos';
 import { imagen } from '@/content/imagenes';
 import { lineaPrecios } from '@/lib/precios';
@@ -26,7 +26,7 @@ export default async function PaginaCurso({ params }: Props) {
   return (
     <div className={`contenedor acento-${c.acento}`}>
       <h1 className="titulo-pagina gotica">{c.titulo}</h1>
-      {c.imagen && <Image {...imagen(c.imagen)} alt={`Portada de ${c.titulo}`} sizes="360px" priority style={{ maxWidth: 360, width: '100%', margin: '0 auto 24px' }} />}
+      {c.imagen && <Image {...imagen(c.imagen)} alt={`Portada de ${c.titulo}`} sizes="(max-width: 760px) 90vw, 480px" priority className="curso-portada" />}
       <div className="prosa">
         <p className="centro"><em>{c.resumen}</em></p>
         <Texto parrafos={c.descripcion} />
@@ -43,6 +43,22 @@ export default async function PaginaCurso({ params }: Props) {
             ))}
           </dl>
         )}
+      </div>
+      {c.sesiones && (
+        <div className="sesiones">
+          {c.sesiones.map((x, i) => (
+            <section key={i} className="sesion">
+              {x.imagen && <Image {...imagen(x.imagen)} alt="" sizes="(max-width: 760px) 200px, 240px" />}
+              <div>
+                <h2 className="gotica acento">sesión {i + 1}</h2>
+                <h3>{formatear(x.titulo)}</h3>
+                <Texto parrafos={x.texto} />
+              </div>
+            </section>
+          ))}
+        </div>
+      )}
+      <div className="prosa">
         {Object.keys(c.precios).length > 0 && <p className="lectura-meta centro">{lineaPrecios(c.precios)}</p>}
         <Compra curso={c} />
       </div>

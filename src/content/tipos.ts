@@ -51,6 +51,8 @@ export interface Curso {
   resumen: string;
   descripcion: Texto;
   precios: Precios;
+  /** Sesiones con su texto e imagen (se muestran una a una en la ficha). */
+  sesiones?: { titulo: string; texto: Texto; imagen?: string }[];
   /** Temario opcional, agrupado por partes. */
   temario?: { parte?: string; sesiones: string[] }[];
   /** Fechas y horario en texto, p. ej. "Domingos 6 y 20 de diciembre de 2026". */

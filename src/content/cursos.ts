@@ -11,14 +11,46 @@ export const cursos: Curso[] = [
     titulo: 'Cursito de invierno: el revés de Saturno',
     tipo: 'curso',
     publicado: true,
-    acento: 'morado',
-    resumen: 'Tres domingos por Meet dedicados a Saturno.',
-    descripcion: [],
+    acento: 'rojo',
+    imagen: '/img/cursos/el-reves-de-saturno.webp',
+    resumen: 'Saturno en el tarot, en tres sesiones por Meet.',
+    // Introducción armada con frases de Camila (paneles promocionales) y los títulos de sus sesiones.
+    descripcion: [
+      'Tres domingos para encontrarnos con Saturno: en el _fin del mundo_, como _viejo adversario_ y como _acertijo_ y _solución_.',
+      'Los procesos saturninos nos revelan que la experiencia no tiene partes sino ==_reveses_==.',
+    ],
     precios: { eur: 80, usd: 95, cop: 300000 },
-    // La tercera sesión es el 17 o el 24 de enero [por confirmar]: no se publica la fecha.
+    // La tercera sesión: el flyer dice 17 de enero (año escrito "2026"); otra fuente dice 24 [por confirmar].
     fechas: 'Domingos 6 y 20 de diciembre de 2026, y una tercera sesión en enero.',
-    formato: 'Virtual por Google Meet · 16:00-18:00 España / 10:00-12:00 Colombia · con grabación de cada sesión.',
-    temario: [{ sesiones: ['Saturno en el fin del mundo', 'Saturno, un viejo adversario', 'Saturno, acertijo y solución'] }],
+    formato: 'Virtual por Google Meet · 16:00-18:00 España / 10:00-12:00 Colombia.',
+    // Textos de los paneles promocionales (palabras de Camila).
+    sesiones: [
+      {
+        titulo: 'Saturno en el _fin del mundo_',
+        imagen: '/img/cursos/saturno-sesion-1.webp',
+        texto: [
+          'Puede parecerte extraño que la correspondencia del _Gran maléfico_ en el tarot sea la carta de _El mundo_; la laureada, la que celebra los finales satisfactorios ascendida en la libertad de un baile. Pero los procesos saturninos nos revelan que la experiencia no tiene partes sino _reveses_: es en el límite de la vida que la contradicción de un mundo queda saldada en un círculo de gozo sin fin.',
+          'En las labores devocionales del amor la distancia entre el _sufrimiento_ y el _placer_ queda sacrificada.',
+        ],
+      },
+      {
+        titulo: 'Saturno, un _viejo adversario_',
+        imagen: '/img/cursos/saturno-sesion-2.webp',
+        texto: [
+          'Ha tenido _mil y un_ nombres a lo largo de la historia.',
+          'Como el tarot mismo, _Él_ es multifacético, polimorfo, engañoso. Infame. Se esconde detrás de las apariencias de las cosas para incitarte a poseerlas. Te hace caer en las trampas de tu _vanidad_ para que veas quién eres sin _distorsiones_.',
+          'Te atrapa para preguntarte y obligarte a responder: ¿lo que creías _querer_ era realmente lo que _deseabas_?',
+        ],
+      },
+      {
+        titulo: 'Saturno, _acertijo_ y solución',
+        imagen: '/img/cursos/saturno-sesion-3.webp',
+        texto: [
+          '_Tu estrella_ orientadora siempre está, pero no siempre es visible. Como la esperanza, necesitas la estrella, solo aparece cuando se oscurece y te has perdido. La estrella del _destino_ no se ve con los ojos exteriores, sino con los interiores que son sinestésicos: oyen un llamado de _libertad_ que anuncia que es tiempo de moverte.',
+          'Sales a buscar tu estrella pero ella no es pasiva; ella desea, se mueve y te encuentra en lugares inesperados. Se presenta disfrazada de situaciones y personas que te hacen sentir que estás donde _debes_ estar.',
+        ],
+      },
+    ],
   },
   {
     slug: 'la-brevisima-historia-del-tarot',
