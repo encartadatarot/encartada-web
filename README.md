@@ -19,7 +19,7 @@ Web de **en_cartada** (tarot, sueños y astrología), migrada desde Canva a **Ne
 | Horario, días libres, antelación, descansos | `src/config/agenda.ts` |
 | WhatsApp, Instagram, email, menú | `src/config/sitio.ts` |
 | Colores y tipografía | `src/app/globals.css` |
-| Imágenes | `public/img/…` |
+| Imágenes | `public/img/…` (los collages animados, separados en tiras, en `public/img/collages/` y `src/content/collages.ts`) |
 
 Formato de los textos: `**negrita**`, `_cursiva_`, `==color de la lectura==`. Cada elemento de la lista es un párrafo.
 

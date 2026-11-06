@@ -265,3 +265,19 @@ fieldset.campo legend { font-size: 1rem; color: var(--texto-suave); margin-botto
 .opciones-columna .opcion { text-align: left; }
 .zona { margin: 0 0 18px; }
 .zona .nota { margin: 0 0 6px; }
+
+/* ─── Collages animados (tiras que se balancean, como en Canva) ─── */
+.collage { position: relative; width: 100%; }
+.collage-capa {
+  position: absolute;
+  will-change: transform;
+  animation: balanceo var(--duracion) ease-in-out var(--retraso) infinite;
+  animation-play-state: paused;
+}
+.collage.en-vista .collage-capa { animation-play-state: running; }
+@keyframes balanceo {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  30% { transform: translate(var(--dx), calc(var(--dy) * -1)) rotate(var(--giro)); }
+  65% { transform: translate(calc(var(--dx) * -0.6), var(--dy)) rotate(calc(var(--contragiro) * -1)); }
+}
+@media (prefers-reduced-motion: reduce) { .collage-capa { animation: none; } }

@@ -6,6 +6,8 @@ import { imagen } from '@/content/imagenes';
 import { oraculos } from '@/content/oraculos';
 import type { Servicio } from '@/content/tipos';
 import { lineaPrecios } from '@/lib/precios';
+import { tieneCollage } from '@/content/collages';
+import { CollageAnimado } from './CollageAnimado';
 import { formatear, Texto } from './Texto';
 
 export function modalidadTexto(s: Servicio) {
@@ -51,7 +53,11 @@ export function BloqueLectura({ servicio: s }: { servicio: Servicio }) {
       </div>
       {s.imagen && (
         <div className="lectura-imagen">
-          <Image {...imagen(s.imagen)} alt={`Collage de cartas de ${s.nombre}`} sizes="(max-width: 760px) 300px, 420px" />
+          {tieneCollage(s.slug) ? (
+            <CollageAnimado nombre={s.slug} alt={`Collage de cartas de ${s.nombre}`} />
+          ) : (
+            <Image {...imagen(s.imagen)} alt={`Collage de cartas de ${s.nombre}`} sizes="(max-width: 760px) 300px, 420px" />
+          )}
         </div>
       )}
     </section>
