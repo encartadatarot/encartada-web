@@ -10,6 +10,7 @@
   --dorado: #bb9740;
   --plata: #9db4b5;
   --azul: #5a7fb8;
+  --gris: #8fa2b6; /* gris azulado */
   --acento: var(--dorado);
   --radio: 999px;
   --ancho: 1120px;
@@ -36,6 +37,7 @@ a { color: inherit; }
 .acento-dorado { --acento: var(--dorado); }
 .acento-plata { --acento: var(--plata); }
 .acento-azul { --acento: var(--azul); }
+.acento-gris { --acento: var(--gris); }
 .acento { color: var(--acento); }
 
 .gotica { font-family: var(--f-gotica), serif; font-weight: 400; letter-spacing: 0.01em; }
@@ -237,9 +239,12 @@ a.tarjeta:hover { border-color: var(--acento); transform: translateY(-2px); }
 }
 
 /* Tarjetas de reserva con su collage */
-.tarjeta-lectura { flex-direction: row; align-items: center; gap: 18px; }
-.tarjeta-lectura img { width: 90px; flex-shrink: 0; }
-.tarjeta-lectura .titulo-lectura { font-size: 1.9rem; margin: 0 0 4px; }
+.rejilla-reservas { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
+.tarjeta-lectura { flex-direction: row; align-items: center; gap: 18px; min-height: 200px; height: 100%; padding: 22px; }
+.tarjeta-lectura img { width: 88px; height: 150px; object-fit: contain; flex-shrink: 0; }
+.tarjeta-lectura > div { min-width: 0; flex: 1; }
+.tarjeta-lectura .titulo-lectura { font-size: 1.65rem; margin: 0 0 6px; line-height: 1.08; overflow-wrap: break-word; hyphens: manual; }
+.tarjeta-lectura p { font-size: 1.1rem; }
 .tarjeta-portada { width: 100%; border-radius: 10px; margin-bottom: 6px; }
 
 /* Ficha de curso: portada y sesiones */
@@ -327,3 +332,6 @@ a:focus-visible .collage.al-pasar .collage-capa { animation-play-state: running;
 .curso-portada-marco { max-width: 480px; margin: 0 auto 28px; }
 .curso-portada-marco .curso-portada { margin: 0; }
 .reserva-resumen .flota img { max-width: 220px; margin: 0 auto 16px; }
+
+/* Lema bajo el mosaico de la portada */
+.lema-portada { text-align: center; font-size: clamp(2rem, 4.6vw, 3.2rem); line-height: 1.15; margin-top: 36px; margin-bottom: 0; }

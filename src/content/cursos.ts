@@ -11,7 +11,7 @@ export const cursos: Curso[] = [
     titulo: 'Cursito de invierno: el revés de Saturno',
     tipo: 'curso',
     publicado: true,
-    acento: 'rojo',
+    acento: 'gris', // gris azulado
     imagen: '/img/cursos/el-reves-de-saturno.webp',
     resumen: 'Saturno en el tarot, en tres sesiones por Meet.',
     // Introducción armada con frases de Camila (paneles promocionales) y los títulos de sus sesiones.

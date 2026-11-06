@@ -1,6 +1,6 @@
 export type Moneda = 'eur' | 'usd' | 'cop';
 export type Precios = Partial<Record<Moneda, number>>;
-export type Acento = 'rojo' | 'verde' | 'morado' | 'dorado' | 'plata' | 'azul';
+export type Acento = 'rojo' | 'verde' | 'morado' | 'dorado' | 'plata' | 'azul' | 'gris';
 export type Modalidad = 'virtual' | 'presencial';
 
 /** Texto con formato sencillo: **negrita**, _cursiva_, ==color de acento==. Cada string es un párrafo. */

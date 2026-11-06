@@ -20,7 +20,7 @@ export default function Reservar() {
         return (
           <section key={c.slug} className="seccion">
             <h2 className={`${o.fuente} centro`} style={{ fontSize: '2.4rem', color: o.color }}>{c.rotulo ?? c.titulo}</h2>
-            <div className="rejilla">
+            <div className="rejilla rejilla-reservas">
               {lista.map((s) => {
                 const { className, style } = estiloLectura(s);
                 return (
