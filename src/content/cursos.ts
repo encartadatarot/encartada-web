@@ -20,8 +20,8 @@ export const cursos: Curso[] = [
       'Los procesos saturninos nos revelan que la experiencia no tiene partes sino ==_reveses_==.',
     ],
     precios: { eur: 80, usd: 95, cop: 300000 },
-    // La tercera sesión: el flyer dice 17 de enero (año escrito "2026"); otra fuente dice 24 [por confirmar].
-    fechas: 'Domingos 6 y 20 de diciembre de 2026, y una tercera sesión en enero.',
+    // Tercera sesión confirmada por Camila: 17 de enero (el flyer escribe el año como "2026").
+    fechas: 'Domingos 6 y 20 de diciembre de 2026, y 17 de enero.',
     formato: 'Virtual por Google Meet · 16:00-18:00 España / 10:00-12:00 Colombia.',
     // Textos de los paneles promocionales (palabras de Camila).
     sesiones: [
