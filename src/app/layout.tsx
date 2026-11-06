@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Cormorant_Garamond, UnifrakturMaguntia } from 'next/font/google';
+import { Cormorant_Garamond, Italiana, UnifrakturMaguntia } from 'next/font/google';
 import { Cabecera } from '@/components/Cabecera';
 import { Pie } from '@/components/Pie';
 import { sitio } from '@/config/sitio';
@@ -7,6 +7,8 @@ import './globals.css';
 
 const serif = Cormorant_Garamond({ subsets: ['latin'], weight: ['400', '500', '600', '700'], style: ['normal', 'italic'], variable: '--f-serif' });
 const gotica = UnifrakturMaguntia({ subsets: ['latin'], weight: '400', variable: '--f-gotica' });
+// Títulos del oráculo solar: la serif fina y ancha más parecida a la de la web original.
+const solar = Italiana({ subsets: ['latin'], weight: '400', variable: '--f-solar' });
 
 export const metadata: Metadata = {
   metadataBase: new URL(sitio.url),
@@ -17,7 +19,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es" className={`${serif.variable} ${gotica.variable}`}>
+    <html lang="es" className={`${serif.variable} ${gotica.variable} ${solar.variable}`}>
       <body>
         <Cabecera />
         <main>{children}</main>

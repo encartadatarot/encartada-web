@@ -1,20 +1,21 @@
+import Image from 'next/image';
 import Link from 'next/link';
-import { Texto } from '@/components/Texto';
-import { categorias, introTarot } from '@/content/categorias';
+import { CabeceraOraculo } from '@/components/CabeceraOraculo';
+import { introTarot } from '@/content/categorias';
+import { imagen } from '@/content/imagenes';
+import { tiradas } from '@/content/oraculos';
 
 export const metadata = { title: 'Terrestre: tarot' };
 
 export default function Tarot() {
-  const subs = categorias.filter((c) => c.oraculo === 'terrestre');
-  const acentos = ['rojo', 'verde', 'dorado'];
   return (
-    <div className="contenedor acento-verde">
-      <h1 className="titulo-pagina gotica">Terrestre: tarot</h1>
-      <Texto parrafos={introTarot} className="cita" />
-      <div className="rejilla" style={{ marginTop: 40 }}>
-        {subs.map((c, i) => (
-          <Link key={c.slug} href={`/${c.slug}`} className={`tarjeta acento-${acentos[i % 3]}`}>
-            <h3 className="gotica">{c.titulo}</h3>
+    <div className="contenedor">
+      <CabeceraOraculo oraculo="terrestre" intro={introTarot} />
+      <div className="columnas-cartas">
+        {tiradas.map((t) => (
+          <Link key={t.href} href={t.href} className="carta-enlace">
+            <h2>{t.titulo}</h2>
+            <Image {...imagen(t.imagen)} alt={`Collage de ${t.titulo.toLowerCase()}`} sizes="(max-width: 760px) 240px, 280px" />
           </Link>
         ))}
       </div>

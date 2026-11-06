@@ -1,18 +1,19 @@
+import Image from 'next/image';
 import Link from 'next/link';
-import { categorias } from '@/content/categorias';
+import { imagen } from '@/content/imagenes';
+import { oraculos } from '@/content/oraculos';
 
 export const metadata = { title: 'Oráculos' };
-const acento = { lunar: 'plata', terrestre: 'verde', solar: 'dorado' } as const;
 
 export default function Oraculos() {
   return (
     <div className="contenedor">
-      <h1 className="titulo-pagina gotica acento-dorado">Oráculos</h1>
-      <div className="rejilla">
-        {categorias.map((c) => (
-          <Link key={c.slug} href={`/${c.slug}`} className={`tarjeta acento-${acento[c.oraculo]}`}>
-            <span className="etiqueta">{c.oraculo}</span>
-            <h3 className="gotica">{c.titulo}</h3>
+      <div className="columnas-cartas hub">
+        {Object.values(oraculos).map((o) => (
+          <Link key={o.href} href={o.href} className="carta-enlace">
+            <h1 className={o.fuente} style={{ color: o.color }}>{o.nombre}</h1>
+            <p>{o.subtitulo}</p>
+            <Image {...imagen(o.tarjeta)} alt={`Oráculo ${o.nombre.toLowerCase()}: ${o.subtitulo}`} sizes="(max-width: 760px) 220px, 260px" priority />
           </Link>
         ))}
       </div>

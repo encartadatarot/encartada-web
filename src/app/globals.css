@@ -6,7 +6,7 @@
   --superficie: #0e0e10;
   --rojo: #c42228;
   --verde: #528c55;
-  --morado: #8a2fb5;
+  --morado: #7923a2;
   --dorado: #bb9740;
   --plata: #9db4b5;
   --azul: #5a7fb8;
@@ -187,3 +187,57 @@ a.tarjeta:hover { border-color: var(--acento); transform: translateY(-2px); }
 .lema { font-size: clamp(1.6rem, 3.4vw, 2.2rem); }
 .cita { max-width: 640px; margin: 0 auto; font-size: 1.45rem; text-align: center; }
 .cita p { margin: 0 0 .6em; }
+
+/* ─── Tipografías de títulos por oráculo (como en la web original) ─── */
+.titulo-lunar { font-family: var(--f-serif), serif; font-style: italic; font-weight: 600; letter-spacing: -0.01em; }
+.titulo-solar { font-family: var(--f-solar), serif; font-weight: 400; letter-spacing: 0.01em; }
+.titulo-solar em { font-family: var(--f-serif), serif; font-weight: 400; font-style: italic; }
+.titulo-lectura { color: var(--acento); line-height: 1.02; }
+.lectura-texto .titulo-lectura { font-size: clamp(2.6rem, 5vw, 3.4rem); }
+.lectura-texto .titulo-solar { font-size: clamp(2.4rem, 4.6vw, 3.1rem); }
+
+/* Cabecera de cada oráculo: collage + título + texto */
+.cabecera-oraculo { display: grid; grid-template-columns: minmax(220px, 360px) 1fr; gap: 40px; align-items: start; padding: 32px 0 24px; }
+.cabecera-oraculo h1 { font-size: clamp(3rem, 7vw, 5rem); margin: 0 0 18px; line-height: 1; }
+.cabecera-oraculo-texto { columns: 2 260px; column-gap: 36px; font-size: 1.3rem; line-height: 1.25; }
+.cabecera-oraculo-texto p { margin: 0 0 .8em; break-inside: avoid; }
+.cabecera-oraculo-texto .acento { font-size: 1.15em; }
+@media (max-width: 760px) {
+  .cabecera-oraculo { grid-template-columns: 1fr; gap: 20px; text-align: center; }
+  .cabecera-oraculo-imagen { max-width: 240px; margin: 0 auto; }
+}
+
+/* Columnas de cartas (oráculos, tiradas de tarot) */
+.columnas-cartas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; align-items: start; padding: 48px 0; }
+.carta-enlace { text-decoration: none; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.carta-enlace img { max-width: 260px; width: 100%; transition: transform .25s; }
+.carta-enlace:hover img { transform: translateY(-4px) rotate(-1deg); }
+.carta-enlace h2 { font-size: 1.8rem; font-weight: 500; margin: 0; }
+.hub h1, .hub h3 { font-size: clamp(3rem, 6vw, 4.6rem); margin: 0; line-height: 1; }
+.hub p { margin: 0 0 8px; font-size: 1.35rem; }
+@media (max-width: 760px) { .columnas-cartas { grid-template-columns: 1fr; gap: 48px; } .carta-enlace img { max-width: 240px; } }
+
+/* Portada */
+.mosaico img { width: 100%; height: auto; }
+.quien-soy { display: grid; grid-template-columns: 1fr 1.25fr 180px; gap: 40px; align-items: center; padding: 56px 0 24px; }
+.quien-soy h2 { font-size: clamp(2.6rem, 5vw, 3.6rem); }
+.quien-soy p { font-size: 1.45rem; line-height: 1.25; margin: 0; }
+.quien-soy .quien-soy-cita { font-size: clamp(1.9rem, 3.4vw, 2.7rem); line-height: 1.12; text-align: right; }
+.quien-soy-imagen { width: 100%; }
+.portada-columnas { display: grid; grid-template-columns: 1fr 1fr 1.6fr; gap: 32px; align-items: start; padding: 48px 0 0; }
+.portada-columnas h2 { font-size: clamp(2.2rem, 4vw, 3rem); line-height: 1; }
+.portada-columnas .carta-enlace img { max-width: 200px; }
+.portada-lema { position: relative; justify-self: center; max-width: 420px; }
+.portada-lema p { position: absolute; left: 10%; right: 10%; bottom: 8%; background: #000; padding: 10px 16px; margin: 0; font-size: 1.3rem; text-align: center; }
+@media (max-width: 860px) {
+  .quien-soy { grid-template-columns: 1fr; text-align: center; }
+  .quien-soy .quien-soy-cita { text-align: center; }
+  .quien-soy-imagen { max-width: 160px; margin: 0 auto; }
+  .portada-columnas { grid-template-columns: 1fr 1fr; }
+  .portada-lema { grid-column: 1 / -1; }
+}
+
+/* Tarjetas de reserva con su collage */
+.tarjeta-lectura { flex-direction: row; align-items: center; gap: 18px; }
+.tarjeta-lectura img { width: 90px; flex-shrink: 0; }
+.tarjeta-lectura .titulo-lectura { font-size: 1.9rem; margin: 0 0 4px; }

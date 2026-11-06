@@ -12,6 +12,10 @@ export interface Servicio {
   categoria: string; // slug de la categoría (ver categorias.ts)
   publicado: boolean;
   acento: Acento;
+  /** Color exacto de la web original (hex). Si no, se usa el del acento. */
+  color?: string;
+  /** Título con formato (p. ej. "Tu canción _natal_"). Si no, se usa `nombre`. */
+  titulo?: string;
   imagen?: string;
   cartas?: number;
   duracionMin: number;
@@ -33,6 +37,8 @@ export interface Categoria {
   titulo: string;
   oraculo: 'lunar' | 'terrestre' | 'solar';
   intro?: Texto;
+  /** Pequeño título de la web original, p. ej. "Tiradas grupales". */
+  rotulo?: string;
 }
 
 export interface Curso {

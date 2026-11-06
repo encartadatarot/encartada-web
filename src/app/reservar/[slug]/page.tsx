@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { detalleLectura, modalidadTexto } from '@/components/BloqueLectura';
+import { detalleLectura, estiloLectura, modalidadTexto, TituloLectura } from '@/components/BloqueLectura';
+import { imagen } from '@/content/imagenes';
 import { Reserva } from '@/components/Reserva';
 import { Texto } from '@/components/Texto';
 import { getServicio, serviciosPublicados } from '@/content/servicios';
@@ -19,11 +20,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ReservarServicio({ params }: Props) {
   const s = getServicio((await params).slug);
   if (!s || s.reservaOnline === false) notFound();
+  const { className, style } = estiloLectura(s);
   return (
-    <div className={`contenedor reserva acento-${s.acento}`}>
+    <div className={`contenedor reserva ${className}`} style={style}>
       <aside className="reserva-resumen">
-        {s.imagen && <Image src={s.imagen} alt="" width={840} height={1400} />}
-        <h1 className="gotica">{s.nombre}</h1>
+        {s.imagen && <Image {...imagen(s.imagen)} alt="" sizes="220px" />}
+        <TituloLectura servicio={s} como="h1" />
         <Texto parrafos={s.descripcion} className="lectura-desc" />
         <p className="lectura-meta">
           {modalidadTexto(s)}<br />

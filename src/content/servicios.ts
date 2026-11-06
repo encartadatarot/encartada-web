@@ -8,6 +8,7 @@ export const servicios: Servicio[] = [
   // ─── Tarot individual ────────────────────────────────────────────────
   {
     slug: 'el-nudo',
+    color: '#c42228',
     nombre: 'El nudo',
     categoria: 'tarot-individual',
     publicado: true,
@@ -23,6 +24,7 @@ export const servicios: Servicio[] = [
   },
   {
     slug: 'la-encrucijada',
+    color: '#528c55',
     nombre: 'La encrucijada',
     categoria: 'tarot-individual',
     publicado: true,
@@ -39,6 +41,7 @@ export const servicios: Servicio[] = [
   },
   {
     slug: 'el-bien-morir',
+    color: '#7923a2',
     nombre: 'El bien morir',
     categoria: 'tarot-individual',
     publicado: true,
@@ -55,6 +58,7 @@ export const servicios: Servicio[] = [
   },
   {
     slug: 'el-tropo',
+    color: '#bb9740',
     nombre: 'El tropo',
     categoria: 'tarot-individual',
     publicado: true,
@@ -72,6 +76,8 @@ export const servicios: Servicio[] = [
   // ─── Lunar: sueños ───────────────────────────────────────────────────
   {
     slug: 'la-hipnosis',
+    color: '#b6b6ab',
+    imagen: '/img/lecturas/la-hipnosis.webp',
     nombre: 'La hipnosis',
     categoria: 'suenos',
     publicado: true,
@@ -85,6 +91,8 @@ export const servicios: Servicio[] = [
   },
   {
     slug: 'el-despertar',
+    color: '#7e96bf',
+    imagen: '/img/lecturas/el-despertar.webp',
     nombre: 'El despertar',
     categoria: 'suenos',
     publicado: true,
@@ -98,6 +106,8 @@ export const servicios: Servicio[] = [
   // ─── Tarot grupal ────────────────────────────────────────────────────
   {
     slug: 'la-mariposa',
+    color: '#f4824d',
+    imagen: '/img/lecturas/la-mariposa.webp',
     nombre: 'La mariposa',
     categoria: 'tarot-grupal',
     publicado: true,
@@ -110,6 +120,8 @@ export const servicios: Servicio[] = [
   },
   {
     slug: 'la-tertulia',
+    color: '#d88996',
+    imagen: '/img/lecturas/la-tertulia.webp',
     nombre: 'La tertulia',
     categoria: 'tarot-grupal',
     publicado: true,
@@ -127,6 +139,8 @@ export const servicios: Servicio[] = [
   // ─── Tarot de temporada ──────────────────────────────────────────────
   {
     slug: 'la-brujula',
+    color: '#f4824d',
+    imagen: '/img/lecturas/la-brujula.webp',
     nombre: 'La brújula',
     categoria: 'tarot-de-temporada',
     publicado: true,
@@ -146,6 +160,9 @@ export const servicios: Servicio[] = [
   // en oferta/oraculos.md, así que por ahora solo se publican EUR y USD.
   {
     slug: 'tu-cancion-natal',
+    color: '#70b4c0',
+    titulo: 'Tu canción _natal_',
+    imagen: '/img/lecturas/tu-cancion-natal.webp',
     nombre: 'Tu canción natal',
     categoria: 'astrologia',
     publicado: true,
@@ -155,11 +172,15 @@ export const servicios: Servicio[] = [
     precios: { eur: 130, usd: 150 },
     descripcion: [
       'Escuchamos la canción que compusieron los dioses para tu nacimiento, a partir de la técnica tradicional helenística: ==Ritmo== (signos y casas), ==Melodía== (planetas tradicionales) e ==Historia== (dignidades y aspectos).',
+      '_Recomendada para personas que quieran conocer el contexto completo de su carta natal._',
       '_Incluye el PDF de la sesión._',
     ],
   },
   {
     slug: 'sesion-de-improvisacion',
+    color: '#ae3e1e',
+    titulo: 'Sesión de _improvisación_',
+    imagen: '/img/lecturas/sesion-de-improvisacion.webp',
     nombre: 'Sesión de improvisación',
     categoria: 'astrologia',
     publicado: true,
@@ -174,6 +195,9 @@ export const servicios: Servicio[] = [
   },
   {
     slug: 'la-danza-de-las-luminarias',
+    color: '#bb9740',
+    titulo: 'La danza de las _luminarias_',
+    imagen: '/img/lecturas/la-danza-de-las-luminarias.webp',
     nombre: 'La danza de las luminarias',
     categoria: 'astrologia',
     publicado: true,
@@ -181,10 +205,16 @@ export const servicios: Servicio[] = [
     duracionMin: 75,
     modalidades: ['virtual', 'presencial'],
     precios: { eur: 80, usd: 90 },
-    descripcion: ['Al compás de tu canción natal, interpretamos la danza de tu ==Sol== y tu ==Luna==, para que recuperes tu _sabiduría musical_ y puedas improvisar libremente dentro de la melodía que te proponen.'],
+    descripcion: [
+      'Al compás de tu canción natal, interpretamos la danza de tu ==Sol== y tu ==Luna==, para que recuperes tu _sabiduría musical_ y puedas improvisar libremente dentro de la melodía que te proponen.',
+      '_Recomendada para personas que quieren encontrar sentido y su visión creativa: una forma singular de vivir._',
+    ],
   },
   {
     slug: 'la-consonancia',
+    color: '#fed576',
+    titulo: 'La consonancia: _retorno solar_',
+    imagen: '/img/lecturas/la-consonancia.webp',
     nombre: 'La consonancia: retorno solar',
     categoria: 'astrologia',
     publicado: true,
@@ -192,10 +222,16 @@ export const servicios: Servicio[] = [
     duracionMin: 90,
     modalidades: ['virtual', 'presencial'],
     precios: { eur: 90, usd: 100 },
-    descripcion: ['En el contexto de tu canción natal, nos centramos en el compás que empieza ==el día de tu cumpleaños==, para que _ensayes tu danza_ antes de salir al escenario.'],
+    descripcion: [
+      'En el contexto de tu canción natal, nos centramos en el compás que empieza ==el día de tu cumpleaños==, para que _ensayes tu danza_ antes de salir al escenario.',
+      '_Recomendada para personas que ya conocen su carta natal y quieren enfocarse en ese año en particular._',
+    ],
   },
   {
     slug: 'la-disonancia',
+    color: '#a47ffe',
+    titulo: 'La disonancia: _retorno de Saturno_',
+    imagen: '/img/lecturas/la-disonancia.webp',
     nombre: 'La disonancia: retorno de Saturno',
     categoria: 'astrologia',
     publicado: true,
