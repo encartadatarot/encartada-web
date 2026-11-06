@@ -377,3 +377,7 @@ a:focus-visible .collage.al-pasar .collage-capa { animation-play-state: running;
   .pc-enlace h2 { font-size: 2.2rem !important; line-height: 1 !important; }
   .pc-final { grid-column: 1 / -1; max-width: 340px; margin: 0 auto; }
 }
+
+/* Títulos numerados en las tarjetas de «aprende conmigo» (cursos, grabaciones) */
+.lista-numerada { margin: 4px 0 0; padding-left: 1.6em; color: var(--texto-suave); font-size: 1.2rem; display: grid; gap: 8px; }
+.lista-numerada li::marker { color: var(--acento); font-weight: 600; }

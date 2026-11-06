@@ -19,7 +19,11 @@ export default function Aprende() {
         {secciones.map((s) => (
           <Link key={s.href} href={s.href} className={`tarjeta acento-${s.acento}`}>
             <h3 className="gotica">{s.titulo}</h3>
-            {s.lista.length ? s.lista.map((x) => <Letras as="p" key={x.slug}>{x.titulo}</Letras>) : <p>Muy pronto.</p>}
+            {s.lista.length ? (
+              <ol className="lista-numerada">
+                {s.lista.map((x) => <li key={x.slug}><Letras>{x.titulo}</Letras></li>)}
+              </ol>
+            ) : <p>Muy pronto.</p>}
           </Link>
         ))}
       </div>
