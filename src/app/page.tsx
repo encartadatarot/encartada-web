@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { formatear } from '@/components/Texto';
 import { sitio } from '@/config/sitio';
 import { imagen } from '@/content/imagenes';
-import { oraculos } from '@/content/oraculos';
 
 // Textos: palabras de Camila (README y oferta/ del repositorio "encartada"). Imágenes: collages de la web original.
 export default function Inicio() {
@@ -45,18 +44,6 @@ export default function Inicio() {
         <div className="portada-lema">
           <Image {...imagen('/img/inicio/lema.webp')} alt="" sizes="(max-width: 760px) 90vw, 420px" />
           <p>{formatear(sitio.lema)}</p>
-        </div>
-      </section>
-
-      <section className="seccion contenedor">
-        <div className="columnas-cartas hub">
-          {Object.values(oraculos).map((o) => (
-            <Link key={o.href} href={o.href} className="carta-enlace">
-              <h3 className={o.fuente} style={{ color: o.color }}>{o.nombre}</h3>
-              <p>{o.subtitulo}</p>
-              <Image {...imagen(o.tarjeta)} alt="" sizes="220px" />
-            </Link>
-          ))}
         </div>
       </section>
     </>
